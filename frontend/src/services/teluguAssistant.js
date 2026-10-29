@@ -16,6 +16,218 @@ function containsAny(text, keywords = []) {
   return keywords.some((kw) => norm.includes(kw.toLowerCase()));
 }
 
+const NUMBER_MAP = {
+  'ఒకటి': 1, 'ఒక': 1, 'వన్': 1, 'one': 1, '1': 1,
+  'రెండు': 2, 'రెండూ': 2, 'టూ': 2, 'two': 2, '2': 2,
+  'మూడు': 3, 'త్రీ': 3, 'three': 3, '3': 3,
+  'నాలుగు': 4, 'ఫోర్': 4, 'four': 4, '4': 4,
+  'ఐదు': 5, 'ఫైవ్': 5, 'five': 5, '5': 5,
+  'ఆరు': 6, 'సిక్స్': 6, 'six': 6, '6': 6,
+  'ఏడు': 7, 'సెవెన్': 7, 'seven': 7, '7': 7,
+  'ఎనిమిది': 8, 'ఎయిట్': 8, 'eight': 8, '8': 8,
+  'తొమ్మిది': 9, 'నైన్': 9, 'nine': 9, '9': 9,
+  'పది': 10, 'టెన్': 10, 'ten': 10, '10': 10,
+  'ఇరవై': 20, 'ట్వంటీ': 20, 'twenty': 20, '20': 20
+};
+
+/**
+ * Parses spoken billing commands in Telugu or English.
+ * Automatically matches customer, extracts products, pack sizes, quantities,
+ * picks default prices from stock inventory, and captures discounts or custom price overrides.
+ */
+export function parseVoiceBillCommand(rawQuery, contextData = {}) {
+  const query = rawQuery.toLowerCase().trim();
+  const { products = [], customers = [] } = contextData;
+
+  const isBillIntent = containsAny(query, [
+    'బిల్', 'బిల్లు', 'రాయి', 'చేయి', 'వేయి', 'ఆర్డర్', 'కొత్త బిల్', 'బిల్లు రాయి', 'బిల్లు చేయి',
+    'bill', 'invoice', 'prepare bill', 'create bill', 'make bill', 'write bill', 'bill for', 'bill karo'
+  ]);
+
+  if (!isBillIntent) return null;
+
+  // 1. Identify Customer (registered or provisional)
+  let matchedCustomer = null;
+  for (const cust of customers) {
+    const cName = cust.name.toLowerCase();
+    const parts = cName.split(' ');
+    if (query.includes(cName) || parts.some((p) => p.length > 3 && query.includes(p))) {
+      matchedCustomer = cust;
+      break;
+    }
+  }
+
+  const NAME_ALIASES = [
+    { telugu: ['రమేష్', 'రమేష్ శర్మ'], english: ['ramesh', 'ramesh sharma'] },
+    { telugu: ['విజయ్', 'విజయ్ పెయింటర్'], english: ['vijay', 'vijay painter'] },
+    { telugu: ['సురేష్', 'సురేష్ కుమార్'], english: ['suresh', 'suresh kumar'] },
+    { telugu: ['శ్రీనివాస్', 'శ్రీనివాస', 'శ్రీను'], english: ['srinivas', 'srinivasa', 'srinu'] },
+    { telugu: ['రాంబాబు', 'రాం బాబు'], english: ['rambabu'] },
+    { telugu: ['రాజేష్'], english: ['rajesh'] },
+    { telugu: ['అమిత్', 'అమిత్ వర్మ'], english: ['amit', 'amit verma'] },
+    { telugu: ['రాజు'], english: ['raju'] },
+    { telugu: ['నవీన్'], english: ['naveen'] },
+    { telugu: ['కళ్యాణ్'], english: ['kalyan'] },
+    { telugu: ['కృష్ణ'], english: ['krishna'] },
+    { telugu: ['వెంకట్', 'వెంకటేశ్వర్లు'], english: ['venkat', 'venkatesh'] },
+    { telugu: ['ప్రసాద్'], english: ['prasad'] },
+    { telugu: ['ఆనంద్'], english: ['anand'] },
+  ];
+
+  if (!matchedCustomer) {
+    for (const na of NAME_ALIASES) {
+      if (na.telugu.some((t) => query.includes(t)) || na.english.some((e) => query.includes(e))) {
+        const found = customers.find((c) => na.english.some((e) => c.name.toLowerCase().includes(e)));
+        if (found) {
+          matchedCustomer = found;
+        } else {
+          matchedCustomer = {
+            id: '',
+            name: na.english[0].charAt(0).toUpperCase() + na.english[0].slice(1),
+            phone: '',
+            customerType: 'Retail Buyer'
+          };
+        }
+        break;
+      }
+    }
+  }
+
+  let customerName = matchedCustomer ? matchedCustomer.name : 'Walk-in Retail Buyer';
+  let customerId = matchedCustomer ? matchedCustomer.id : '';
+  let customerPhone = matchedCustomer ? matchedCustomer.phone : '';
+
+  if (!matchedCustomer) {
+    const custMatch = query.match(/(?:for|to|customer|పేరుతో|గారికి|కి)\s+([a-zA-Z\u0C00-\u0C7F]+)/i);
+    if (custMatch && custMatch[1] && !['2', '3', '4', 'royale', 'paint', 'డబ్బాలు', 'బిల్లు'].includes(custMatch[1].toLowerCase())) {
+      customerName = custMatch[1].trim();
+      customerName = customerName.charAt(0).toUpperCase() + customerName.slice(1);
+    }
+  }
+
+  // 2. Extract Spoken Discount or Price Override
+  let discount = 0;
+  const discountMatch = query.match(/(?:డిస్కౌంట్|రాయితీ|discount|off|తగ్గించు|reduce)\s*(?:రూపాయలు|rs|inr|₹)?\s*(\d+)/i) ||
+                        query.match(/(\d+)\s*(?:డిస్కౌంట్|discount|off)/i);
+  if (discountMatch && discountMatch[1]) {
+    discount = Number(discountMatch[1]) || 0;
+  }
+
+  let overridePrice = null;
+  const priceMatch = query.match(/(?:ధర|రేట్|ఖరీదు|price|rate|cost)\s*(?:రూపాయలు|rs|inr|₹|is)?\s*(\d{3,6})/i);
+  if (priceMatch && priceMatch[1]) {
+    overridePrice = Number(priceMatch[1]);
+  }
+
+  // 3. Match Products & Quantities
+  const PRODUCT_KEYWORDS = [
+    { key: 'royale', terms: ['royale', 'రాయల్', 'రాయలే', 'లగ్జరీ'], defaultId: 'PRD-AP-01' },
+    { key: 'ultima', terms: ['ultima', 'అల్టిమా', 'అల్తిమా'], defaultId: 'PRD-AP-03' },
+    { key: 'apex', terms: ['apex', 'ఎపెక్స్', 'అపెక్స్'], defaultId: 'PRD-AP-03' },
+    { key: 'tractor', terms: ['tractor', 'ట్రాక్టర్', 'ట్రాక్టరు'], defaultId: 'PRD-AP-04' },
+    { key: 'dampproof', terms: ['damp proof', 'dampproof', 'డాంప్ ప్రూఫ్', 'డంప్ ప్రూఫ్', 'waterproof'], defaultId: 'PRD-AP-05' },
+    { key: 'weathercoat', terms: ['weathercoat', 'weather coat', 'వెదర్‌కోట్'], defaultId: 'PRD-BP-01' },
+    { key: 'enamel', terms: ['enamel', 'ఎనామెల్', 'ఎనమెల్', 'luxol', 'లుక్సోల్'], defaultId: 'PRD-BP-02' },
+    { key: 'primer', terms: ['primer', 'ప్రైమర్'], defaultId: 'PRD-NP-01' },
+    { key: 'putty', terms: ['putty', 'పుట్టీ', 'పుట్టి', 'birla white', 'బిర్లా వైట్'], defaultId: 'PRD-BW-01' },
+    { key: 'distemper', terms: ['distemper', 'డిస్టెంపర్'], defaultId: 'PRD-AP-04' },
+  ];
+
+  const matchedItems = [];
+
+  for (const pk of PRODUCT_KEYWORDS) {
+    if (pk.terms.some((t) => query.includes(t))) {
+      let matchedPack = null;
+      if (query.includes('20 l') || query.includes('20l') || query.includes('20 లీటర్లు') || query.includes('20లీ') || query.includes('20 లీటర్')) {
+        matchedPack = '20 L';
+      } else if (query.includes('10 l') || query.includes('10l') || query.includes('10 లీటర్లు') || query.includes('10లీ')) {
+        matchedPack = '10 L';
+      } else if (query.includes('4 l') || query.includes('4l') || query.includes('4 లీటర్లు') || query.includes('4లీ')) {
+        matchedPack = '4 L';
+      } else if (query.includes('1 l') || query.includes('1l') || query.includes('1 లీటరు') || query.includes('1లీ')) {
+        matchedPack = '1 L';
+      }
+
+      let product = products.find((p) => {
+        const matchesTerm = pk.terms.some((t) => p.name.toLowerCase().includes(t) || (p.brand || '').toLowerCase().includes(t));
+        if (!matchesTerm) return false;
+        if (matchedPack) return p.packSize.toLowerCase().replace(/\s/g, '') === matchedPack.toLowerCase().replace(/\s/g, '');
+        return true;
+      });
+
+      if (!product) {
+        product = products.find((p) => p.id === pk.defaultId) || products[0];
+      }
+
+      if (product && !matchedItems.some((it) => it.productId === product.id)) {
+        let qty = 1;
+        // Search for number word or digits directly preceding the product terms
+        const regexStr = '(\\d+|ఒకటి|రెండు|మూడు|నాలుగు|ఐదు|ఆరు|పది|one|two|three|four|five|six|ten)\\s*(?:డబ్బాలు|డబ్బా|బకెట్|బకెట్లు|లీటర్లు|cans|buckets|tins|packs)?\\s*(?:of\\s*)?(?:' + pk.terms.join('|') + ')';
+        const match = query.match(new RegExp(regexStr, 'i'));
+        if (match && match[1]) {
+          const rawNum = match[1].toLowerCase().trim();
+          qty = NUMBER_MAP[rawNum] || Number(rawNum) || 1;
+        } else {
+          const generalMatch = query.match(/(\d+)\s*(?:డబ్బాలు|డబ్బా|బకెట్|బకెట్లు|cans|buckets|tins|packs)/i);
+          if (generalMatch && generalMatch[1]) {
+            qty = Number(generalMatch[1]) || 1;
+          }
+        }
+
+        const unitPrice = overridePrice !== null ? overridePrice : product.unitPrice;
+        matchedItems.push({
+          productId: product.id,
+          productName: product.name,
+          brand: product.brand,
+          packSize: product.packSize,
+          shadeCode: product.shadeCode || '',
+          shadeHex: product.shadeHex || '#FAFAFA',
+          quantity: Math.max(1, qty),
+          unitPrice: unitPrice,
+          originalPrice: product.unitPrice,
+          currentStock: product.currentStock ?? 0,
+          total: Math.max(1, qty) * unitPrice
+        });
+      }
+    }
+  }
+
+  // If intent was specifically billing, fallback to first catalog item if no specific name detected
+  if (matchedItems.length === 0 && (containsAny(query, ['బిల్ రాయి', 'కొత్త బిల్లు', 'బిల్లు చేయి', 'prepare bill', 'new bill', 'create bill', 'make bill']))) {
+    const defaultProd = products[0];
+    if (defaultProd) {
+      matchedItems.push({
+        productId: defaultProd.id,
+        productName: defaultProd.name,
+        brand: defaultProd.brand,
+        packSize: defaultProd.packSize,
+        shadeCode: defaultProd.shadeCode || '',
+        shadeHex: defaultProd.shadeHex || '#FAFAFA',
+        quantity: 1,
+        unitPrice: overridePrice !== null ? overridePrice : defaultProd.unitPrice,
+        originalPrice: defaultProd.unitPrice,
+        currentStock: defaultProd.currentStock ?? 0,
+        total: defaultProd.unitPrice
+      });
+    }
+  }
+
+  if (matchedItems.length === 0) return null;
+
+  const subtotal = matchedItems.reduce((acc, it) => acc + it.total, 0);
+  const netTotal = Math.max(0, subtotal - discount);
+
+  return {
+    customerName,
+    customerId,
+    customerPhone,
+    items: matchedItems,
+    discount,
+    subtotal,
+    netTotal
+  };
+}
+
 /**
  * Process a user query (in Telugu or English) against live paint shop state
  * and returns the correct answer in Telugu and English, plus optional actions.
@@ -26,12 +238,29 @@ export function processTeluguVoiceQuery(rawQuery, contextData) {
     products = [],
     sales = [],
     customers = [],
-    settings = { currency: '₹', shopName: 'SAARTHI Paints' },
+    settings = { currency: '₹', shopName: 'SRI BASKARA PAINTS AGENCIES' },
     lowStockProducts = [],
     totalInventoryValuation = 0,
     totalStockUnits = 0,
     totalOutstandingCredit = 0,
   } = contextData;
+
+  // 0. AI Advance Mode: Voice Bill Generation (వాయిస్ బిల్ తయారీ)
+  const voiceBill = parseVoiceBillCommand(rawQuery, contextData);
+  if (voiceBill) {
+    const totalPacks = voiceBill.items.reduce((sum, it) => sum + it.quantity, 0);
+    const itemSummary = voiceBill.items.map((it) => `${it.quantity} ${it.productName} (${it.packSize})`).join(', ');
+    return {
+      teluguText: `${voiceBill.customerName} గారికి ${totalPacks} పెయింట్ డబ్బాలతో (మొత్తం ${settings.currency}${voiceBill.netTotal.toLocaleString('en-IN')}) బిల్లు సిద్ధం చేశాను. మీరు క్రింద ధరను సవరించవచ్చు లేదా పేపర్ బిల్లు ప్రింట్ చేయవచ్చు.`,
+      englishText: `Prepared bill for ${voiceBill.customerName} with ${totalPacks} paint cans totaling ${settings.currency}${voiceBill.netTotal.toLocaleString('en-IN')}. Review, adjust prices, or proceed to print bill.`,
+      action: {
+        type: 'PREPARE_VOICE_BILL',
+        bill: voiceBill,
+        page: 'sales'
+      },
+      data: voiceBill
+    };
+  }
 
   // 1. Navigation Commands (పేజీ నావిగేషన్)
   if (

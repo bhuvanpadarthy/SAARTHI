@@ -11,14 +11,20 @@ import {
   HelpCircle,
   Radio,
   Send,
-  RotateCcw
+  RotateCcw,
+  Receipt,
+  CheckCircle2,
+  Trash2,
+  Plus,
+  Minus,
+  Tag
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { processTeluguVoiceQuery, speakTeluguText } from '../../services/teluguAssistant';
 
 export const TeluguVoiceAssistant = ({ isOpen, onClose }) => {
   const contextData = useApp();
-  const { setActivePage } = contextData;
+  const { setActivePage, loadVoiceBillIntoPOS, createSale, notify, settings } = contextData;
 
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -26,19 +32,22 @@ export const TeluguVoiceAssistant = ({ isOpen, onClose }) => {
   const [transcript, setTranscript] = useState('');
   const [lastQuery, setLastQuery] = useState('');
   const [response, setResponse] = useState(null);
+  const [editableBill, setEditableBill] = useState(null);
+  const [isDirectConfirming, setIsDirectConfirming] = useState(false);
   const [textInput, setTextInput] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
   const recognitionRef = useRef(null);
 
-  // Suggested Telugu queries
+  // Suggested Telugu queries (with AI Advance Mode voice billing prompts)
   const quickChips = [
+    { label: '⚡ రమేష్ కి 2 రాయల్ 20L బిల్ రాయి', query: 'రమేష్ శర్మ కి 2 రాయల్ ఎమల్షన్ 20 లీటర్లు బిల్ రాయి' },
+    { label: '📝 సురేష్ కి 1 ఏపెక్స్ 20L, 200 డిస్కౌంట్', query: 'సురేష్ కి 1 ఏపెక్స్ అల్టిమా 20L బిల్లు చేయి, డిస్కౌంట్ 200' },
+    { label: '🎨 విజయ్ పెయింటర్ 3 ట్రాక్టర్ 20L, ధర 3200', query: 'విజయ్ పెయింటర్ కి 3 డబ్బాలు ట్రాక్టర్ ఎమల్షన్ 20L, ధర 3200 బిల్ రాయి' },
     { label: '📦 రాయల్ ఎమల్షన్ స్టాక్ ఎంత?', query: 'రాయల్ ఎమల్షన్ స్టాక్ ఎంత' },
     { label: '⚠️ ఏ పెయింట్స్ తక్కువగా ఉన్నాయి?', query: 'ఏ పెయింట్స్ తక్కువగా ఉన్నాయి' },
     { label: '💰 ఈరోజు మొత్తం అమ్మకాలు ఎంత?', query: 'ఈరోజు అమ్మకాలు ఎంత' },
     { label: '👥 కస్టమర్ల ఖాతా బకాయి ఎంత?', query: 'కస్టమర్ల బకాయి ఎంత' },
-    { label: '🎨 అపెక్స్ అల్టిమా రేట్ ఎంత?', query: 'అపెక్స్ అల్టిమా రేట్ ఎంత' },
-    { label: '📑 కొత్త పేపర్ బిల్ రాయి', query: 'కొత్త బిల్లు ఓపెన్ చేయి' },
   ];
 
   // Initialize SpeechRecognition
@@ -117,6 +126,13 @@ export const TeluguVoiceAssistant = ({ isOpen, onClose }) => {
     const answer = processTeluguVoiceQuery(trimmed, contextData);
     setResponse(answer);
 
+    // If this is an AI Advance Mode voice bill preparation
+    if (answer?.action?.type === 'PREPARE_VOICE_BILL' && answer.action.bill) {
+      setEditableBill(answer.action.bill);
+    } else {
+      setEditableBill(null);
+    }
+
     // Speak the answer aloud in Telugu
     if (answer?.teluguText) {
       setIsSpeaking(true);
@@ -125,11 +141,103 @@ export const TeluguVoiceAssistant = ({ isOpen, onClose }) => {
       });
     }
 
-    // Execute app navigation action if recognized
+    // Execute app navigation action if recognized (only for pure navigation)
     if (answer?.action?.type === 'NAVIGATE' && answer.action.page) {
       setTimeout(() => {
         setActivePage(answer.action.page);
       }, 1200);
+    }
+  };
+
+  // AI Advance Mode: Edit quantity or reduce price for specific customers
+  const handleUpdateBillItem = (index, field, value) => {
+    if (!editableBill) return;
+    const updatedItems = [...editableBill.items];
+    const target = { ...updatedItems[index] };
+
+    if (field === 'quantity') {
+      target.quantity = Math.max(1, Number(value) || 1);
+    } else if (field === 'unitPrice') {
+      target.unitPrice = Math.max(0, Number(value) || 0);
+    }
+    target.total = target.quantity * target.unitPrice;
+    updatedItems[index] = target;
+
+    const subtotal = updatedItems.reduce((acc, it) => acc + it.total, 0);
+    const netTotal = Math.max(0, subtotal - (Number(editableBill.discount) || 0));
+
+    setEditableBill({
+      ...editableBill,
+      items: updatedItems,
+      subtotal,
+      netTotal
+    });
+  };
+
+  // AI Advance Mode: Edit customer discount to reduce total price
+  const handleUpdateDiscount = (val) => {
+    if (!editableBill) return;
+    const discountNum = Math.max(0, Number(val) || 0);
+    const netTotal = Math.max(0, editableBill.subtotal - discountNum);
+    setEditableBill({
+      ...editableBill,
+      discount: discountNum,
+      netTotal
+    });
+  };
+
+  const handleRemoveBillItem = (index) => {
+    if (!editableBill || editableBill.items.length <= 1) return;
+    const updatedItems = editableBill.items.filter((_, i) => i !== index);
+    const subtotal = updatedItems.reduce((acc, it) => acc + it.total, 0);
+    const netTotal = Math.max(0, subtotal - (Number(editableBill.discount) || 0));
+    setEditableBill({
+      ...editableBill,
+      items: updatedItems,
+      subtotal,
+      netTotal
+    });
+  };
+
+  // Load the voice-prepared bill directly into the full POS sales counter
+  const handleLoadToPOS = () => {
+    if (!editableBill) return;
+    loadVoiceBillIntoPOS(editableBill);
+    handleStopSpeaking();
+    onClose();
+  };
+
+  // Instant one-click direct bill confirmation from voice
+  const handleDirectConfirm = async () => {
+    if (!editableBill || editableBill.items.length === 0) return;
+    setIsDirectConfirming(true);
+    try {
+      const payload = {
+        customerId: editableBill.customerId || undefined,
+        customerName: editableBill.customerName || 'Walk-in Retail Buyer',
+        customerPhone: editableBill.customerPhone || '',
+        paymentMode: 'Cash',
+        discount: Number(editableBill.discount) || 0,
+        notes: '⚡ Created via AI Voice Copilot (Advance Mode)',
+        items: editableBill.items.map((it) => ({
+          productId: it.productId,
+          quantity: it.quantity,
+          unitPrice: it.unitPrice
+        }))
+      };
+      await createSale(payload);
+      handleStopSpeaking();
+      speakTeluguText(`${editableBill.customerName} గారి బిల్లు విజయవంతంగా కన్ఫర్మ్ అయింది. స్టాక్ అప్‌డేట్ చేయబడింది.`);
+      setEditableBill(null);
+      setTimeout(() => {
+        onClose();
+        setActivePage('sales');
+      }, 1400);
+    } catch (err) {
+      console.error('Direct voice sale confirm error:', err);
+      notify(err.message || 'Error creating voice sale', 'warning');
+    } finally {
+      setIsDirectConfirming(false);
     }
   };
 
@@ -325,8 +433,162 @@ export const TeluguVoiceAssistant = ({ isOpen, onClose }) => {
               </div>
             )}
 
+            {/* AI Advance Mode: Voice Prepared Bill Card */}
+            {editableBill && (
+              <div className="voice-bill-card">
+                <div className="voice-bill-header">
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span className="voice-bill-badge">⚡ AI ADVANCE BILL</span>
+                    <span className="voice-bill-customer-name">👤 {editableBill.customerName}</span>
+                  </div>
+                  <span className="voice-bill-hint">ధర తగ్గించే ఆప్షన్ (Edit / reduce prices below)</span>
+                </div>
+
+                <div className="voice-bill-table-wrapper">
+                  <table className="voice-bill-table">
+                    <thead>
+                      <tr>
+                        <th>ఉత్పత్తి (Product)</th>
+                        <th>డబ్బాలు (Qty)</th>
+                        <th>ధర (Price)</th>
+                        <th style={{ textAlign: 'right' }}>మొత్తం (Total)</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {editableBill.items.map((it, idx) => (
+                        <tr key={it.productId || idx}>
+                          <td>
+                            <div style={{ fontWeight: 800, color: 'var(--ink)' }}>{it.productName}</div>
+                            <div style={{ fontSize: '0.74rem', color: 'var(--muted)', display: 'flex', gap: '8px', alignItems: 'center' }}>
+                              <span>{it.brand}</span>
+                              <span>•</span>
+                              <span>{it.packSize}</span>
+                              <span>•</span>
+                              <span style={{ color: it.currentStock <= 4 ? 'var(--red)' : '#10B981', fontWeight: 700 }}>
+                                {it.currentStock <= 4 ? `⚠️ నిల్వ: ${it.currentStock}` : `స్టాక్: ${it.currentStock}`}
+                              </span>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="voice-qty-picker">
+                              <button
+                                type="button"
+                                className="voice-qty-btn"
+                                onClick={() => handleUpdateBillItem(idx, 'quantity', it.quantity - 1)}
+                                disabled={it.quantity <= 1}
+                              >
+                                -
+                              </button>
+                              <span style={{ fontWeight: 800, minWidth: '22px', textAlign: 'center' }}>
+                                {it.quantity}
+                              </span>
+                              <button
+                                type="button"
+                                className="voice-qty-btn"
+                                onClick={() => handleUpdateBillItem(idx, 'quantity', it.quantity + 1)}
+                              >
+                                +
+                              </button>
+                            </div>
+                          </td>
+                          <td>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                <span style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--muted)' }}>₹</span>
+                                <input
+                                  type="number"
+                                  className="voice-price-edit-input"
+                                  value={it.unitPrice}
+                                  onChange={(e) => handleUpdateBillItem(idx, 'unitPrice', e.target.value)}
+                                  title="Edit price for this customer (ధర తగ్గించండి)"
+                                />
+                              </div>
+                              {it.originalPrice && it.unitPrice !== it.originalPrice && (
+                                <span style={{ fontSize: '0.68rem', color: 'var(--red)', textDecoration: 'line-through' }}>
+                                  స్టాక్ ధర: ₹{it.originalPrice}
+                                </span>
+                              )}
+                            </div>
+                          </td>
+                          <td style={{ textAlign: 'right', fontWeight: 800, color: 'var(--ink)' }}>
+                            ₹{(it.quantity * it.unitPrice).toLocaleString('en-IN')}
+                          </td>
+                          <td style={{ textAlign: 'center' }}>
+                            {editableBill.items.length > 1 && (
+                              <button
+                                type="button"
+                                onClick={() => handleRemoveBillItem(idx)}
+                                style={{ background: 'transparent', border: 'none', color: 'var(--red)', cursor: 'pointer', padding: '4px' }}
+                                title="Remove item"
+                              >
+                                <Trash2 size={13} />
+                              </button>
+                            )}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Special Customer Discount & Summary */}
+                <div className="voice-bill-footer-bar">
+                  <div className="voice-bill-discount-box">
+                    <label style={{ fontSize: '0.74rem', fontWeight: 800, textTransform: 'uppercase', color: 'var(--muted)', letterSpacing: '0.05em' }}>
+                      కస్టమర్ రాయితీ (Discount ₹):
+                    </label>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <span style={{ fontWeight: 800, color: 'var(--muted)' }}>₹</span>
+                      <input
+                        type="number"
+                        className="voice-discount-input"
+                        value={editableBill.discount || 0}
+                        onChange={(e) => handleUpdateDiscount(e.target.value)}
+                        placeholder="0"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="voice-bill-total-summary">
+                    <div style={{ fontSize: '0.76rem', color: 'var(--muted)' }}>
+                      సబ్‌టోటల్: ₹{editableBill.subtotal.toLocaleString('en-IN')}
+                      {editableBill.discount > 0 && ` • డిస్కౌంట్: -₹${editableBill.discount}`}
+                    </div>
+                    <div style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--ink)', fontFamily: 'var(--font-heading)' }}>
+                      మొత్తం బిల్లు: <span style={{ color: 'var(--red)' }}>₹{editableBill.netTotal.toLocaleString('en-IN')}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="voice-bill-action-row">
+                  <button
+                    type="button"
+                    className="btn-voice-pos"
+                    onClick={handleLoadToPOS}
+                    title="Open this prepared bill in POS sales counter"
+                  >
+                    <Receipt size={16} />
+                    <span>📝 పేపర్ బిల్ కౌంటర్‌కి పంపు (Load in POS Counter)</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    className="btn-voice-confirm"
+                    onClick={handleDirectConfirm}
+                    disabled={isDirectConfirming}
+                    title="Immediately save bill and deduct stock"
+                  >
+                    <CheckCircle2 size={16} />
+                    <span>{isDirectConfirming ? 'సేవ్ అవుతోంది...' : '⚡ ఇప్పుడే బిల్ సేవ్ చేయి (Instant Save)'}</span>
+                  </button>
+                </div>
+              </div>
+            )}
+
             {/* Action button if answer navigated */}
-            {response.action?.page && (
+            {!editableBill && response.action?.page && (
               <div className="answer-action-row">
                 <button
                   type="button"

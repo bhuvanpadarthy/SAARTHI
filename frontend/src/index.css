@@ -1949,6 +1949,234 @@ a:hover {
   justify-content: flex-end;
 }
 
+/* ==========================================================================
+   AI Advance Mode: Voice Bill Preparation Card & Price Editor
+   ========================================================================== */
+
+.voice-bill-card {
+  margin-top: 14px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 4px 16px rgba(27, 23, 17, 0.08);
+}
+
+.voice-bill-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed var(--line);
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.voice-bill-badge {
+  background: var(--ink);
+  color: var(--yellow);
+  font: 9.5px/1 var(--font-mono);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  padding: 4px 8px;
+  border-radius: 100px;
+}
+
+.voice-bill-customer-name {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.voice-bill-hint {
+  font: 10px/1.2 var(--font-mono);
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.voice-bill-table-wrapper {
+  overflow-x: auto;
+  margin-bottom: 12px;
+}
+
+.voice-bill-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+}
+
+.voice-bill-table th {
+  font: 10px/1 var(--font-mono);
+  text-transform: uppercase;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+  padding: 8px 6px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+}
+
+.voice-bill-table td {
+  padding: 10px 6px;
+  border-bottom: 1px solid rgba(27, 23, 17, 0.06);
+  vertical-align: middle;
+}
+
+.voice-qty-picker {
+  display: inline-flex;
+  align-items: center;
+  background: #FFFFFF;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 2px 4px;
+  gap: 4px;
+}
+
+.voice-qty-btn {
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  background: var(--cream);
+  border: none;
+  color: var(--ink);
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.voice-qty-btn:hover:not(:disabled) {
+  background: var(--yellow);
+}
+
+.voice-qty-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.voice-price-edit-input {
+  width: 78px;
+  padding: 4px 6px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--ink);
+  background: #FFFFFF;
+  outline: none;
+  transition: all 0.18s ease;
+}
+
+.voice-price-edit-input:focus {
+  border-color: var(--ink);
+  box-shadow: 0 0 0 2px rgba(247, 201, 72, 0.4);
+}
+
+.voice-bill-footer-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  background: var(--cream);
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.voice-bill-discount-box {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.voice-discount-input {
+  width: 80px;
+  padding: 5px 8px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--ink);
+  background: #FFFFFF;
+  outline: none;
+}
+
+.voice-discount-input:focus {
+  border-color: var(--ink);
+  box-shadow: 0 0 0 2px rgba(247, 201, 72, 0.4);
+}
+
+.voice-bill-total-summary {
+  text-align: right;
+}
+
+.voice-bill-action-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+@media (max-width: 580px) {
+  .voice-bill-action-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.btn-voice-pos {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: var(--yellow);
+  color: var(--ink);
+  border: 1px solid #E5B938;
+  border-radius: 100px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  box-shadow: 0 2px 6px rgba(247, 201, 72, 0.35);
+}
+
+.btn-voice-pos:hover {
+  background: var(--yellow-hover);
+  transform: translateY(-1px);
+}
+
+.btn-voice-confirm {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: var(--ink);
+  color: var(--paper);
+  border: 1px solid var(--ink);
+  border-radius: 100px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  box-shadow: 0 2px 6px rgba(27, 23, 17, 0.2);
+}
+
+.btn-voice-confirm:hover:not(:disabled) {
+  background: #000000;
+  transform: translateY(-1px);
+}
+
+.btn-voice-confirm:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+
 /* Quick Suggestion Chips */
 .assistant-chips-section {
   padding: 16px 24px;

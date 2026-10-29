@@ -15,9 +15,8 @@ import { CheckCircle2, AlertTriangle, Info, Mic } from 'lucide-react';
 import './index.css';
 
 const MainLayout = () => {
-  const { activePage, notification } = useApp();
+  const { activePage, notification, isVoiceAssistantOpen, openVoiceAssistant, closeVoiceAssistant } = useApp();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isVoiceAssistantOpen, setIsVoiceAssistantOpen] = useState(false);
 
   const renderActivePage = () => {
     switch (activePage) {
@@ -53,7 +52,7 @@ const MainLayout = () => {
         {/* Top Navbar */}
         <Navbar
           onOpenSidebar={() => setIsSidebarOpen(true)}
-          onOpenVoiceAssistant={() => setIsVoiceAssistantOpen(true)}
+          onOpenVoiceAssistant={openVoiceAssistant}
         />
 
         {/* Demo Disclaimer Banner */}
@@ -66,7 +65,7 @@ const MainLayout = () => {
         <button
           type="button"
           className="floating-voice-widget no-print"
-          onClick={() => setIsVoiceAssistantOpen(true)}
+          onClick={openVoiceAssistant}
           title="సారథి తెలుగు వాయిస్ అసిస్టెంట్ (SAARTHI Telugu Voice Assistant)"
         >
           <div className="voice-btn-mic">
@@ -81,7 +80,7 @@ const MainLayout = () => {
         {/* Telugu Voice Assistant Modal */}
         <TeluguVoiceAssistant
           isOpen={isVoiceAssistantOpen}
-          onClose={() => setIsVoiceAssistantOpen(false)}
+          onClose={closeVoiceAssistant}
         />
 
         {/* Toast Notification */}

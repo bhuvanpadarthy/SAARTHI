@@ -224,6 +224,23 @@ export const AppProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isBackendConnected, setIsBackendConnected] = useState(false);
   const [backendStatus, setBackendStatus] = useState('Connecting to backend...');
+  const [pendingVoiceBill, setPendingVoiceBill] = useState(null);
+  const [isVoiceAssistantOpen, setIsVoiceAssistantOpen] = useState(false);
+
+  const openVoiceAssistant = () => setIsVoiceAssistantOpen(true);
+  const closeVoiceAssistant = () => setIsVoiceAssistantOpen(false);
+
+  // Load a voice-generated bill into POS
+  const loadVoiceBillIntoPOS = (billData) => {
+    setPendingVoiceBill(billData);
+    setActivePage('sales');
+    setIsVoiceAssistantOpen(false);
+    notify(`⚡ AI Voice Bill prepared for ${billData.customerName || 'Customer'}! Review prices and print.`, 'success');
+  };
+
+  const clearPendingVoiceBill = () => {
+    setPendingVoiceBill(null);
+  };
 
   // Toast notification helper
   const notify = (message, type = 'success') => {
@@ -696,6 +713,13 @@ export const AppProvider = ({ children }) => {
         setAppMode,
         plugins,
         togglePlugin,
+        pendingVoiceBill,
+        loadVoiceBillIntoPOS,
+        clearPendingVoiceBill,
+        isVoiceAssistantOpen,
+        setIsVoiceAssistantOpen,
+        openVoiceAssistant,
+        closeVoiceAssistant,
       }}
     >
       {children}

@@ -283,6 +283,11 @@ export const InvoiceA4 = ({
           <div className="a4-sign-label">{getLabel('authorizedSign')}</div>
         </div>
       </div>
-    </div>
+    
+      {/* Telugu Thank You Note */}
+      <div className="a4-telugu-thankyou">
+        🙏 మా వద్ద కొనుగోలు చేసినందుకు ధన్యవాదాలు! — {settings.shopName} (Thank you for your business!)
+      </div>
+</div>
   );
 };

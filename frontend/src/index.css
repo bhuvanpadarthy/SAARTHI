@@ -99,6 +99,19 @@
   --rose-50:           #FBF0ED;
   --rose-border:       #F5CEC5;
 
+  /* Luxury Obsidian & Metallic Gold Tokens */
+  --obsidian-bg:       #141414;
+  --charcoal-surface:  #222222;
+  --charcoal-card:     #1E1E1E;
+  --charcoal-elevated: #282828;
+  --text-pearl:        #EAEAEA;
+  --gold-primary:      #D4AF37;
+  --gold-dark:         #996515;
+  --gold-light:        #F3E5AB;
+  --gradient-gold:     linear-gradient(135deg, #D4AF37 0%, #996515 100%);
+  --gold-border:       rgba(212, 175, 55, 0.35);
+  --gold-glow:         0 0 24px rgba(212, 175, 55, 0.25);
+
   --radius-sm:         6px;
   --radius-md:         10px;
   --radius-lg:         16px;
@@ -111,6 +124,23 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+button {
+  font-family: inherit;
+  font-size: inherit;
+  border: none;
+  background: none;
+  cursor: pointer;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+input, select, textarea {
+  font-family: inherit;
+  font-size: inherit;
+  outline: none;
 }
 
 html {
@@ -388,15 +418,58 @@ a:hover {
   border: 1px solid rgba(247, 201, 72, 0.5);
 }
 
-/* Mode Switch Segmented Pill */
+/* Mode Switch Segmented Pill (Obsidian & Metallic Gold Luxury) */
+.sidebar-mode-card {
+  background: #1A1815;
+  border: 1px solid rgba(212, 175, 55, 0.22);
+  border-radius: 14px;
+  padding: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.sidebar-mode-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.sidebar-mode-title {
+  font: 10px/1 var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #B5AFA4;
+  font-weight: 700;
+}
+
+.mode-micro-badge {
+  font: 9px/1 var(--font-mono);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  padding: 3px 7px;
+  border-radius: 100px;
+}
+
+.mode-micro-badge.ai {
+  background: rgba(212, 175, 55, 0.18);
+  color: #F7C948;
+  border: 1px solid rgba(212, 175, 55, 0.35);
+}
+
+.mode-micro-badge.real {
+  background: rgba(38, 93, 114, 0.2);
+  color: #7DD3FC;
+  border: 1px solid rgba(38, 93, 114, 0.4);
+}
+
 .sidebar-mode-switch-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 5px;
-  background: var(--paper);
+  background: #11100E;
   padding: 4px;
   border-radius: 10px;
-  border: 1px solid var(--line);
+  border: 1px solid rgba(212, 175, 55, 0.15);
 }
 
 .sidebar-mode-btn {
@@ -404,123 +477,118 @@ a:hover {
   align-items: center;
   justify-content: center;
   gap: 6px;
-  padding: 7px 10px;
+  padding: 8px 10px;
   border-radius: 7px;
-  font-size: 0.76rem;
+  font-size: 0.78rem;
   font-weight: 700;
   font-family: var(--font-sans);
-  color: var(--muted);
+  color: #9C968B;
   background: transparent;
   border: none;
   cursor: pointer;
   outline: none;
-  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .sidebar-mode-btn:hover {
-  color: var(--ink);
-  background: rgba(27, 23, 17, 0.06);
+  color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .sidebar-mode-btn.active-ai {
-  background: var(--ink);
-  color: #FFFFFF;
-  box-shadow: 0 2px 6px rgba(27, 23, 17, 0.2);
+  background: linear-gradient(135deg, #D4AF37 0%, #996515 100%);
+  color: #141414;
+  font-weight: 800;
+  box-shadow: 0 2px 10px rgba(212, 175, 55, 0.35);
 }
 
 .sidebar-mode-btn.active-real {
-  background: var(--yellow);
-  color: var(--ink);
+  background: linear-gradient(135deg, #F7C948 0%, #E97745 100%);
+  color: #141414;
   font-weight: 800;
-  box-shadow: 0 2px 6px rgba(247, 201, 72, 0.35);
+  box-shadow: 0 2px 10px rgba(247, 201, 72, 0.3);
 }
 
 /* Shop Info Card in Footer */
 .shop-info-card {
-  background: #FFFFFF;
-  border: 1px solid var(--line);
+  background: #1A1815;
+  border: 1px solid rgba(212, 175, 55, 0.22);
   border-radius: 14px;
-  padding: 10px 12px;
+  padding: 11px 13px;
   display: flex;
   align-items: center;
-  gap: 10px;
-  box-shadow: 0 2px 8px rgba(27, 23, 17, 0.04);
-  transition: all 0.18s ease;
+  gap: 11px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+  transition: all 0.2s ease;
 }
 
 .shop-info-card:hover {
-  border-color: rgba(27, 23, 17, 0.3);
-  box-shadow: 0 4px 12px rgba(27, 23, 17, 0.08);
+  border-color: rgba(212, 175, 55, 0.5);
+  transform: translateY(-1px);
 }
 
 .shop-avatar {
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   border-radius: 10px;
-  background: rgba(247, 201, 72, 0.22);
-  color: #7A5700;
+  background: linear-gradient(135deg, #D4AF37 0%, #996515 100%);
+  color: #141414;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  border: 1px solid rgba(247, 201, 72, 0.4);
+  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);
 }
 
 .shop-meta {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  flex: 1;
+  overflow: hidden;
 }
 
 .shop-meta-name {
   font-size: 0.82rem;
   font-weight: 800;
-  color: var(--ink);
-  letter-spacing: -0.01em;
+  color: #FFFFFF;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  letter-spacing: -0.01em;
 }
 
 .shop-meta-tag {
   font: 10px/1.2 var(--font-mono);
-  color: var(--muted);
-  margin-top: 2px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  color: #D4AF37;
+  margin-top: 3px;
 }
 
 /* ==========================================================================
-   Floating Telugu Voice Assistant Widget
+   Floating Telugu Voice Assistant Widget (Obsidian & Metallic Gold Luxury)
    ========================================================================== */
 
 .floating-voice-widget {
   position: fixed;
   bottom: 24px;
   right: 28px;
-  z-index: 99;
+  z-index: 999;
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  padding: 8px 18px 8px 10px;
-  background-color: var(--ink);
-  color: var(--paper);
-  border: 1px solid rgba(247, 201, 72, 0.35);
+  padding: 8px 20px 8px 10px;
+  background-color: #141414;
+  color: #EAEAEA;
+  border: 1.5px solid rgba(212, 175, 55, 0.45);
   border-radius: 100px;
-  box-shadow: 0 12px 32px rgba(27, 23, 17, 0.22), 0 2px 8px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4), 0 0 16px rgba(212, 175, 55, 0.2);
   cursor: pointer;
   outline: none;
-  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.24s cubic-bezier(0.16, 1, 0.3, 1);
   font-family: var(--font-sans);
 }
 
 .floating-voice-widget:hover {
-  transform: translateY(-3px) scale(1.02);
-  background-color: #000000;
-  box-shadow: 0 16px 36px rgba(27, 23, 17, 0.3), 0 0 0 4px rgba(247, 201, 72, 0.2);
-  border-color: var(--yellow);
+  transform: translateY(-3px) scale(1.03);
+  background-color: #0A0A0A;
+  border-color: #D4AF37;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.5), 0 0 24px rgba(212, 175, 55, 0.35);
 }
 
 .floating-voice-widget:active {
@@ -528,28 +596,17 @@ a:hover {
 }
 
 .voice-btn-mic {
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  background: var(--yellow);
-  color: var(--ink);
+  background: linear-gradient(135deg, #D4AF37 0%, #996515 100%);
+  color: #141414;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  box-shadow: 0 2px 8px rgba(247, 201, 72, 0.45);
-  animation: gentlePulse 2.8s infinite ease-in-out;
-}
-
-@keyframes gentlePulse {
-  0%, 100% {
-    transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(247, 201, 72, 0.5);
-  }
-  50% {
-    transform: scale(1.06);
-    box-shadow: 0 0 0 6px rgba(247, 201, 72, 0);
-  }
+  box-shadow: 0 2px 10px rgba(212, 175, 55, 0.4);
+  animation: gentlePulse 2.6s infinite ease-in-out;
 }
 
 .voice-btn-text {
@@ -560,19 +617,18 @@ a:hover {
 
 .voice-title {
   font-family: var(--font-telugu);
-  font-size: 0.84rem;
-  font-weight: 700;
+  font-size: 0.88rem;
+  font-weight: 800;
   color: #FFFFFF;
   line-height: 1.2;
 }
 
 .voice-sub {
-  font-family: var(--font-mono);
-  font-size: 9.5px;
-  letter-spacing: 0.08em;
+  font: 10px/1.2 var(--font-mono);
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--yellow);
-  margin-top: 1px;
+  color: #D4AF37;
+  margin-top: 2px;
 }
 
 /* Top Navbar */
@@ -1654,32 +1710,35 @@ a:hover {
 }
 
 /* ==========================================================================
-   Telugu Voice Assistant Modal & Components (Rangoli Atelier Elegance)
+   Telugu Voice Assistant Modal (Obsidian & Metallic Gold Luxury)
    ========================================================================== */
 
 .telugu-assistant-overlay {
   z-index: 1050;
+  background-color: rgba(10, 10, 10, 0.75);
+  backdrop-filter: blur(8px);
 }
 
 .telugu-assistant-card {
-  background-color: var(--paper);
-  border-radius: var(--radius-xl);
-  box-shadow: 0 24px 80px rgba(27, 23, 17, 0.28), 0 4px 16px rgba(0, 0, 0, 0.08);
+  background-color: #141414;
+  border-radius: 24px;
+  box-shadow: 0 32px 100px rgba(0, 0, 0, 0.7), 0 0 30px rgba(212, 175, 55, 0.15);
   width: 100%;
-  max-width: 580px;
+  max-width: 620px;
   overflow: hidden;
-  border: 1px solid var(--line);
+  border: 1.5px solid rgba(212, 175, 55, 0.35);
   animation: slideUp 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+  color: #EAEAEA;
 }
 
 .assistant-header {
   padding: 18px 24px;
-  background-color: var(--yellow);
-  color: var(--ink);
+  background: #1C1C1C;
+  color: #FFFFFF;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid rgba(27, 23, 17, 0.12);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
 }
 
 .assistant-header .header-left {
@@ -1689,23 +1748,23 @@ a:hover {
 }
 
 .assistant-avatar {
-  width: 42px;
-  height: 42px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  background-color: var(--ink);
+  background: linear-gradient(135deg, #D4AF37 0%, #996515 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--yellow);
+  color: #141414;
   flex-shrink: 0;
-  box-shadow: 0 2px 8px rgba(27, 23, 17, 0.25);
+  box-shadow: 0 4px 14px rgba(212, 175, 55, 0.35);
 }
 
 .assistant-title {
   font-family: var(--font-telugu);
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   font-weight: 800;
-  color: var(--ink);
+  color: #FFFFFF;
   line-height: 1.2;
 }
 
@@ -1713,57 +1772,58 @@ a:hover {
   font: 10px/1.2 var(--font-mono);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: rgba(27, 23, 17, 0.72);
-  margin-top: 2px;
+  color: #D4AF37;
+  margin-top: 3px;
 }
 
 .assistant-header .header-right {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 
 .assistant-lang-select {
-  background: rgba(27, 23, 17, 0.09);
-  color: var(--ink);
-  border: 1px solid rgba(27, 23, 17, 0.22);
+  background: #252525;
+  color: #EAEAEA;
+  border: 1px solid rgba(212, 175, 55, 0.3);
   padding: 6px 14px;
   border-radius: 100px;
-  font-size: 0.76rem;
+  font-size: 0.78rem;
   font-weight: 700;
   outline: none;
   cursor: pointer;
-  transition: all 0.18s ease;
+  transition: all 0.2s ease;
 }
 
 .assistant-lang-select:hover {
-  background: rgba(27, 23, 17, 0.15);
+  border-color: #D4AF37;
+  background: #2E2E2E;
 }
 
 .assistant-lang-select option {
-  background: #FFFFFF;
-  color: var(--ink);
+  background: #1C1C1C;
+  color: #FFFFFF;
 }
 
 .assistant-close-btn {
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
-  background: rgba(27, 23, 17, 0.09);
-  border: 1px solid rgba(27, 23, 17, 0.18);
-  color: var(--ink);
+  background: #252525;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #B5AFA4;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.18s ease;
+  transition: all 0.2s ease;
   outline: none;
 }
 
 .assistant-close-btn:hover {
-  background: var(--ink);
+  background: #E11D48;
   color: #FFFFFF;
-  border-color: var(--ink);
+  border-color: #E11D48;
 }
 
 /* Central Mic Interaction Zone */
@@ -1772,23 +1832,23 @@ a:hover {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 30px 24px 22px;
-  background: radial-gradient(circle at center, #FFFFFF 0%, var(--paper) 75%);
-  border-bottom: 1px solid var(--line);
+  padding: 32px 24px 24px;
+  background: radial-gradient(circle at center, #222222 0%, #141414 75%);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.15);
 }
 
 .mic-pulsing-btn {
-  width: 86px;
-  height: 86px;
+  width: 90px;
+  height: 90px;
   border-radius: 50%;
-  background: var(--ink);
-  color: var(--yellow);
+  background: linear-gradient(135deg, #D4AF37 0%, #996515 100%);
+  color: #141414;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8px 24px rgba(27, 23, 17, 0.22);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5), 0 0 20px rgba(212, 175, 55, 0.3);
   cursor: pointer;
-  border: 3px solid rgba(247, 201, 72, 0.4);
+  border: 3px solid rgba(245, 222, 136, 0.6);
   transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
   outline: none;
@@ -1796,116 +1856,96 @@ a:hover {
 
 .mic-pulsing-btn:hover {
   transform: scale(1.06);
-  box-shadow: 0 12px 30px rgba(27, 23, 17, 0.32);
-  border-color: var(--yellow);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.6), 0 0 30px rgba(212, 175, 55, 0.5);
+  border-color: #FFFFFF;
 }
 
 .mic-pulsing-btn.listening {
-  background: linear-gradient(135deg, #DC2626 0%, #A94A35 100%);
+  background: linear-gradient(135deg, #EF4444 0%, #B91C1C 100%);
   color: #FFFFFF;
-  border-color: #EF4444;
-  box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7);
+  border-color: #F87171;
+  box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.8);
   animation: pulse-ring-red 1.35s infinite;
 }
 
 .mic-pulsing-btn.speaking {
-  background: linear-gradient(135deg, #265D72 0%, #1B4555 100%);
-  color: var(--yellow);
-  border-color: #265D72;
-  box-shadow: 0 0 0 0 rgba(38, 93, 114, 0.7);
+  background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%);
+  color: #FFFFFF;
+  border-color: #38BDF8;
+  box-shadow: 0 0 0 0 rgba(2, 132, 199, 0.8);
   animation: pulse-ring-teal 1.35s infinite;
 }
 
-@keyframes pulse-ring-red {
-  0% {
-    box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7);
-  }
-  70% {
-    box-shadow: 0 0 0 20px rgba(220, 38, 38, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(220, 38, 38, 0);
-  }
-}
-
-@keyframes pulse-ring-teal {
-  0% {
-    box-shadow: 0 0 0 0 rgba(38, 93, 114, 0.7);
-  }
-  70% {
-    box-shadow: 0 0 0 20px rgba(38, 93, 114, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(38, 93, 114, 0);
-  }
-}
-
 .mic-status-label {
-  margin-top: 16px;
+  margin-top: 18px;
   font-family: var(--font-telugu);
-  font-size: 0.86rem;
+  font-size: 0.95rem;
   font-weight: 700;
   text-align: center;
 }
 
 .status-listening {
-  color: #DC2626;
+  color: #F87171;
   font-weight: 800;
+  text-shadow: 0 0 12px rgba(248, 113, 113, 0.4);
 }
 
 .status-speaking {
-  color: var(--teal);
+  color: #38BDF8;
   font-weight: 800;
+  text-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
 }
 
 .status-idle {
-  color: var(--muted);
+  color: #B5AFA4;
 }
 
 .transcript-box {
-  margin-top: 14px;
-  background: var(--cream);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 10px 16px;
+  margin-top: 16px;
+  background: #1F1F1F;
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  border-radius: 14px;
+  padding: 12px 20px;
   width: 100%;
-  max-width: 480px;
+  max-width: 520px;
   text-align: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
 }
 
 .transcript-tag {
-  font: 9.5px/1 var(--font-mono);
-  letter-spacing: 0.08em;
+  font: 10px/1 var(--font-mono);
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: #D4AF37;
+  font-weight: 700;
 }
 
 .transcript-text {
   font-family: var(--font-telugu);
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   font-weight: 700;
-  color: var(--ink);
-  margin-top: 4px;
+  color: #FFFFFF;
+  margin-top: 6px;
 }
 
 .assistant-error-bar {
-  margin-top: 12px;
-  background: rgba(169, 74, 53, 0.1);
-  border: 1px solid rgba(169, 74, 53, 0.3);
-  color: var(--red);
-  border-radius: 10px;
-  padding: 8px 14px;
-  font-size: 0.8rem;
+  margin-top: 14px;
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  color: #FCA5A5;
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-size: 0.84rem;
   font-weight: 600;
   text-align: center;
-  max-width: 480px;
+  max-width: 520px;
 }
 
 /* Answer Display Section */
 .assistant-answer-box {
-  padding: 18px 24px;
-  background: #FFFFFF;
-  border-bottom: 1px solid var(--line);
+  padding: 20px 24px;
+  background: #1B1B1B;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.15);
 }
 
 .answer-header {
@@ -1920,268 +1960,29 @@ a:hover {
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--ink);
+  color: #D4AF37;
 }
 
 .answer-content-telugu {
   font-family: var(--font-telugu);
-  font-size: 1.02rem;
-  font-weight: 600;
-  line-height: 1.6;
-  color: var(--ink);
-  background: var(--paper);
-  border-left: 4px solid var(--yellow);
-  padding: 12px 16px;
-  border-radius: 0 10px 10px 0;
-  margin-bottom: 8px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  line-height: 1.55;
 }
 
 .answer-content-english {
-  font-size: 0.82rem;
-  color: var(--muted);
-  font-style: italic;
-  padding-left: 16px;
+  font-size: 0.85rem;
+  color: #B5AFA4;
+  margin-top: 6px;
+  line-height: 1.45;
 }
-
-.answer-action-row {
-  margin-top: 12px;
-  display: flex;
-  justify-content: flex-end;
-}
-
-/* ==========================================================================
-   AI Advance Mode: Voice Bill Preparation Card & Price Editor
-   ========================================================================== */
-
-.voice-bill-card {
-  margin-top: 14px;
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  padding: 16px;
-  box-shadow: 0 4px 16px rgba(27, 23, 17, 0.08);
-}
-
-.voice-bill-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-bottom: 12px;
-  border-bottom: 1px dashed var(--line);
-  margin-bottom: 12px;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.voice-bill-badge {
-  background: var(--ink);
-  color: var(--yellow);
-  font: 9.5px/1 var(--font-mono);
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  padding: 4px 8px;
-  border-radius: 100px;
-}
-
-.voice-bill-customer-name {
-  font-size: 0.95rem;
-  font-weight: 800;
-  color: var(--ink);
-}
-
-.voice-bill-hint {
-  font: 10px/1.2 var(--font-mono);
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
-
-.voice-bill-table-wrapper {
-  overflow-x: auto;
-  margin-bottom: 12px;
-}
-
-.voice-bill-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.82rem;
-}
-
-.voice-bill-table th {
-  font: 10px/1 var(--font-mono);
-  text-transform: uppercase;
-  color: var(--muted);
-  letter-spacing: 0.06em;
-  padding: 8px 6px;
-  border-bottom: 1px solid var(--line);
-  text-align: left;
-}
-
-.voice-bill-table td {
-  padding: 10px 6px;
-  border-bottom: 1px solid rgba(27, 23, 17, 0.06);
-  vertical-align: middle;
-}
-
-.voice-qty-picker {
-  display: inline-flex;
-  align-items: center;
-  background: #FFFFFF;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 2px 4px;
-  gap: 4px;
-}
-
-.voice-qty-btn {
-  width: 22px;
-  height: 22px;
-  border-radius: 4px;
-  background: var(--cream);
-  border: none;
-  color: var(--ink);
-  font-weight: 800;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.15s ease;
-}
-
-.voice-qty-btn:hover:not(:disabled) {
-  background: var(--yellow);
-}
-
-.voice-qty-btn:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-}
-
-.voice-price-edit-input {
-  width: 78px;
-  padding: 4px 6px;
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  font-size: 0.82rem;
-  font-weight: 800;
-  color: var(--ink);
-  background: #FFFFFF;
-  outline: none;
-  transition: all 0.18s ease;
-}
-
-.voice-price-edit-input:focus {
-  border-color: var(--ink);
-  box-shadow: 0 0 0 2px rgba(247, 201, 72, 0.4);
-}
-
-.voice-bill-footer-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 14px;
-  background: var(--cream);
-  border-radius: 12px;
-  border: 1px solid var(--line);
-  margin-bottom: 14px;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-.voice-bill-discount-box {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.voice-discount-input {
-  width: 80px;
-  padding: 5px 8px;
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  font-size: 0.82rem;
-  font-weight: 800;
-  color: var(--ink);
-  background: #FFFFFF;
-  outline: none;
-}
-
-.voice-discount-input:focus {
-  border-color: var(--ink);
-  box-shadow: 0 0 0 2px rgba(247, 201, 72, 0.4);
-}
-
-.voice-bill-total-summary {
-  text-align: right;
-}
-
-.voice-bill-action-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-
-@media (max-width: 580px) {
-  .voice-bill-action-row {
-    grid-template-columns: 1fr;
-  }
-}
-
-.btn-voice-pos {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 10px 14px;
-  background: var(--yellow);
-  color: var(--ink);
-  border: 1px solid #E5B938;
-  border-radius: 100px;
-  font-size: 0.82rem;
-  font-weight: 800;
-  cursor: pointer;
-  transition: all 0.18s ease;
-  box-shadow: 0 2px 6px rgba(247, 201, 72, 0.35);
-}
-
-.btn-voice-pos:hover {
-  background: var(--yellow-hover);
-  transform: translateY(-1px);
-}
-
-.btn-voice-confirm {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 10px 14px;
-  background: var(--ink);
-  color: var(--paper);
-  border: 1px solid var(--ink);
-  border-radius: 100px;
-  font-size: 0.82rem;
-  font-weight: 800;
-  cursor: pointer;
-  transition: all 0.18s ease;
-  box-shadow: 0 2px 6px rgba(27, 23, 17, 0.2);
-}
-
-.btn-voice-confirm:hover:not(:disabled) {
-  background: #000000;
-  transform: translateY(-1px);
-}
-
-.btn-voice-confirm:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
 
 /* Quick Suggestion Chips */
 .assistant-chips-section {
-  padding: 16px 24px;
-  background: var(--paper);
-  border-bottom: 1px solid var(--line);
+  padding: 18px 24px;
+  background: #141414;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.15);
 }
 
 .chips-title {
@@ -2192,37 +1993,37 @@ a:hover {
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 10px;
+  color: #D4AF37;
+  margin-bottom: 12px;
 }
 
 .chips-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 7px;
+  gap: 8px;
 }
 
 .query-chip {
-  background: #FFFFFF;
-  border: 1px solid var(--line);
+  background: #222222;
+  border: 1px solid rgba(212, 175, 55, 0.25);
   border-radius: 100px;
-  padding: 7px 13px;
+  padding: 8px 15px;
   font-family: var(--font-telugu);
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   font-weight: 700;
-  color: var(--ink);
+  color: #EAEAEA;
   cursor: pointer;
-  transition: all 0.18s ease;
-  box-shadow: 0 1px 3px rgba(27, 23, 17, 0.04);
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   outline: none;
 }
 
 .query-chip:hover {
-  background: var(--yellow);
-  border-color: #E5B938;
-  color: var(--ink);
-  transform: translateY(-1px);
-  box-shadow: 0 3px 8px rgba(247, 201, 72, 0.35);
+  background: linear-gradient(135deg, #D4AF37 0%, #996515 100%);
+  border-color: #D4AF37;
+  color: #141414;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(212, 175, 55, 0.35);
 }
 
 /* Text Fallback Form */
@@ -2230,56 +2031,52 @@ a:hover {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 14px 24px;
-  background: #FFFFFF;
+  padding: 16px 24px;
+  background: #1A1A1A;
 }
 
 .assistant-text-input {
   flex: 1;
-  border: 1px solid var(--line);
+  border: 1px solid rgba(212, 175, 55, 0.25);
   border-radius: 100px;
-  padding: 9px 16px;
+  padding: 11px 18px;
   font-family: var(--font-telugu);
-  font-size: 0.86rem;
+  font-size: 0.9rem;
   outline: none;
-  background: var(--paper);
-  color: var(--ink);
-  transition: all 0.18s ease;
+  background: #242424;
+  color: #FFFFFF;
+  transition: all 0.2s ease;
 }
 
 .assistant-text-input:focus {
-  background: #FFFFFF;
-  border-color: var(--ink);
-  box-shadow: 0 0 0 3px rgba(27, 23, 17, 0.08);
+  background: #2A2A2A;
+  border-color: #D4AF37;
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
 }
 
 .assistant-send-btn {
-  width: 38px;
-  height: 38px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
-  background: var(--yellow);
-  color: var(--ink);
-  border: none;
+  background: linear-gradient(135deg, #D4AF37 0%, #996515 100%);
+  color: #141414;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  transition: all 0.18s ease;
   flex-shrink: 0;
-  box-shadow: 0 2px 6px rgba(247, 201, 72, 0.4);
-  outline: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 10px rgba(212, 175, 55, 0.3);
 }
 
 .assistant-send-btn:hover {
-  background: var(--yellow-hover);
-  transform: scale(1.05);
+  transform: scale(1.08);
 }
 
 .assistant-send-btn:disabled {
   opacity: 0.35;
   cursor: not-allowed;
   transform: none;
-  box-shadow: none;
 }
 
 /* Animations */
@@ -2325,13 +2122,274 @@ a:hover {
 }
 
 /* Print Rules */
+
+/* ==========================================================================
+   Voice Billing Deck (Embedded on Sales Counter for Father)
+   ========================================================================== */
+
+.voice-billing-deck {
+  background: #141414;
+  border: 1.5px solid rgba(212, 175, 55, 0.35);
+  border-radius: 20px;
+  padding: 22px 26px;
+  margin-bottom: 24px;
+  color: #EAEAEA;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35), 0 0 24px rgba(212, 175, 55, 0.12);
+  position: relative;
+  overflow: hidden;
+}
+
+.voice-deck-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+  padding-bottom: 14px;
+  margin-bottom: 18px;
+}
+
+.voice-deck-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.voice-deck-emblem {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #D4AF37 0%, #996515 100%);
+  color: #141414;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+}
+
+.voice-deck-title {
+  font-family: var(--font-telugu);
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #FFFFFF;
+}
+
+.voice-deck-subtitle {
+  font: 10px/1.2 var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #D4AF37;
+}
+
+.voice-deck-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  padding: 8px 0;
+}
+
+.voice-deck-mic-button {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #D4AF37 0%, #996515 100%);
+  color: #141414;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 20px rgba(212, 175, 55, 0.35);
+  cursor: pointer;
+  border: 3px solid rgba(245, 222, 136, 0.6);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  outline: none;
+  flex-shrink: 0;
+}
+
+.voice-deck-mic-button:hover {
+  transform: scale(1.06);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 28px rgba(212, 175, 55, 0.5);
+  border-color: #FFFFFF;
+}
+
+.voice-deck-mic-button.listening {
+  background: linear-gradient(135deg, #EF4444 0%, #B91C1C 100%);
+  color: #FFFFFF;
+  border-color: #F87171;
+  animation: pulse-ring-red 1.35s infinite;
+}
+
+.voice-deck-mic-button.speaking {
+  background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%);
+  color: #FFFFFF;
+  border-color: #38BDF8;
+  animation: pulse-ring-teal 1.35s infinite;
+}
+
+.voice-deck-status-box {
+  flex: 1;
+  min-width: 260px;
+}
+
+.voice-deck-status-text {
+  font-family: var(--font-telugu);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+.voice-deck-subtext {
+  font-size: 0.82rem;
+  color: #B5AFA4;
+  margin-top: 4px;
+}
+
+.voice-deck-transcript {
+  margin-top: 12px;
+  background: #1C1C1C;
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-family: var(--font-telugu);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #F5DE88;
+}
+
+.voice-deck-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(212, 175, 55, 0.18);
+}
+
+.voice-deck-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-family: var(--font-telugu);
+  font-size: 0.9rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.voice-deck-btn.confirm {
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+  color: #FFFFFF;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+}
+
+.voice-deck-btn.confirm:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(16, 185, 129, 0.5);
+}
+
+.voice-deck-btn.edit {
+  background: #2A2A2A;
+  color: #F7C948;
+  border: 1px solid rgba(247, 201, 72, 0.35);
+}
+
+.voice-deck-btn.edit:hover {
+  background: #353535;
+  border-color: #F7C948;
+}
+
+.voice-deck-btn.replay {
+  background: #2A2A2A;
+  color: #38BDF8;
+  border: 1px solid rgba(56, 189, 248, 0.35);
+}
+
+.voice-deck-btn.replay:hover {
+  background: #353535;
+  border-color: #38BDF8;
+}
+
+.voice-deck-btn.cancel {
+  background: #2A2A2A;
+  color: #F87171;
+  border: 1px solid rgba(248, 113, 113, 0.35);
+}
+
+.voice-deck-btn.cancel:hover {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: #EF4444;
+}
+
+/* Telugu Thank You Note in Invoice */
+.a4-telugu-thankyou {
+  margin-top: 18px;
+  padding: 12px;
+  text-align: center;
+  font-family: var(--font-telugu);
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: #1B1711;
+  border-top: 1.5px dashed rgba(27, 23, 17, 0.25);
+  letter-spacing: 0.02em;
+}
+
+/* ==========================================================================
+   Professional A4 Print CSS Rules (Clean Black & White Printer Friendly)
+   ========================================================================== */
+
 @media print {
-  .no-print {
+  .no-print,
+  .sidebar,
+  .top-navbar,
+  .floating-voice-widget,
+  .voice-billing-deck,
+  .toast-container,
+  .modal-overlay:not(.invoice-modal-overlay),
+  .modal-actions,
+  .invoice-modal-actions,
+  button {
     display: none !important;
   }
-  body, .app-container, .main-wrapper, .page-content {
+
+  body, html, #root, .app-layout, .app-main, .page-content {
     background: #FFFFFF !important;
+    color: #000000 !important;
     padding: 0 !important;
     margin: 0 !important;
+    width: 100% !important;
+    overflow: visible !important;
+  }
+
+  .invoice-modal-overlay {
+    position: static !important;
+    background: transparent !important;
+    padding: 0 !important;
+    display: block !important;
+  }
+
+  .invoice-modal-card {
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .a4-invoice-wrapper {
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 auto !important;
+    width: 100% !important;
+    max-width: 210mm !important;
+  }
+
+  @page {
+    size: A4 portrait;
+    margin: 10mm 12mm;
   }
 }

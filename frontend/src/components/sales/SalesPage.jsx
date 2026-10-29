@@ -28,6 +28,8 @@ import { useApp } from '../../context/AppContext';
 import { InvoiceModal } from '../invoice/InvoiceModal';
 import { SAMPLE_INVOICE_FIXTURE } from '../invoice/sampleInvoiceFixture';
 import { EditShopBillingModal } from './EditShopBillingModal';
+import { processTeluguVoiceQuery, speakTeluguText, getActiveVoiceSession, resetActiveVoiceSession, updateActiveVoiceSession } from '../../services/teluguAssistant';
+import { Mic, Volume2, VolumeX, Radio, RotateCcw, Send } from 'lucide-react';
 
 export const SalesPage = () => {
   const {
@@ -52,6 +54,208 @@ export const SalesPage = () => {
   const [notes, setNotes] = useState('');
   const [discount, setDiscount] = useState('0');
   const [voiceBillBanner, setVoiceBillBanner] = useState(null);
+  // Father's Spoken Voice Billing Deck State
+  const [isVoiceListening, setIsVoiceListening] = useState(false);
+  const [isVoiceSpeaking, setIsVoiceSpeaking] = useState(false);
+  const [voiceTranscript, setVoiceTranscript] = useState('');
+  const [voiceStatus, setVoiceStatus] = useState('మైక్ బటన్ నొక్కి తెలుగులో మాట్లాడండి (ఉదా: "సారథి, భువన్ పేరు మీద కొత్త బిల్లు తయారు చేయి")');
+  const [voiceError, setVoiceError] = useState('');
+  const [voiceTextInput, setVoiceTextInput] = useState('');
+  const voiceRecRef = useRef(null);
+
+  // Initialize Speech Recognition for Father
+  useEffect(() => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      setVoiceError('ఈ బ్రౌజర్‌లో వాయిస్ రికగ్నిషన్ సపోర్ట్ లేదు. క్రింద ప్రశ్నను టైప్ చేయవచ్చు.');
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.continuous = false;
+    recognition.interimResults = true;
+    recognition.lang = 'te-IN'; // Default to Telugu
+
+    recognition.onstart = () => {
+      setIsVoiceListening(true);
+      setVoiceError('');
+      setVoiceTranscript('');
+      setVoiceStatus('🔴 వింటున్నాను... చెప్పండి (Listening...)');
+    };
+
+    recognition.onresult = (event) => {
+      let currentTranscript = '';
+      for (let i = 0; i < event.results.length; i++) {
+        currentTranscript += event.results[i][0].transcript;
+      }
+      setVoiceTranscript(currentTranscript);
+      if (event.results[0].isFinal) {
+        handleSpokenBillingQuery(currentTranscript);
+      }
+    };
+
+    recognition.onerror = (event) => {
+      console.warn('Voice billing deck error:', event.error);
+      setIsVoiceListening(false);
+      if (event.error === 'not-allowed') {
+        setVoiceError('మైక్రోఫోన్ నిరాకరించబడింది. దయచేసి అడ్రస్ బార్‌లో లాక్ గుర్తు నొక్కి మైక్ ఆన్ చేయండి.');
+      } else if (event.error === 'no-speech') {
+        setVoiceStatus('ఏ శబ్దం వినబడలేదు. మళ్ళీ మైక్ నొక్కి మాట్లాడండి.');
+      } else {
+        setVoiceError(`వాయిస్ ఎర్రర్: ${event.error}`);
+      }
+    };
+
+    recognition.onend = () => {
+      setIsVoiceListening(false);
+    };
+
+    voiceRecRef.current = recognition;
+
+    return () => {
+      try {
+        recognition.stop();
+      } catch (e) {}
+    };
+  }, [products, customers]);
+
+  const handleStartVoiceBilling = () => {
+    if (isVoiceSpeaking) {
+      window.speechSynthesis.cancel();
+      setIsVoiceSpeaking(false);
+    }
+    if (isVoiceListening) {
+      try { voiceRecRef.current?.stop(); } catch (e) {}
+      setIsVoiceListening(false);
+      return;
+    }
+    if (voiceRecRef.current) {
+      try {
+        voiceRecRef.current.start();
+      } catch (e) {
+        voiceRecRef.current.stop();
+        setTimeout(() => voiceRecRef.current.start(), 150);
+      }
+    }
+  };
+
+  const handleSpokenBillingQuery = (queryText) => {
+    if (!queryText || !queryText.trim()) return;
+    const trimmed = queryText.trim();
+    setVoiceTranscript(trimmed);
+
+    const contextData = {
+      products,
+      customers,
+      sales,
+      settings,
+      lowStockProducts: [],
+      totalInventoryValuation: 0,
+      totalStockUnits: 0,
+      totalOutstandingCredit: 0
+    };
+
+    const res = processTeluguVoiceQuery(trimmed, contextData);
+
+    if (res.teluguText) {
+      setIsVoiceSpeaking(true);
+      setVoiceStatus(res.teluguText);
+      speakTeluguText(res.teluguText, () => setIsVoiceSpeaking(false));
+    }
+
+    // Apply voice-extracted customer, items, and discount directly to the paper bill counter
+    if (res.action?.bill) {
+      const b = res.action.bill;
+      if (b.customerName) {
+        const found = customers.find((c) => c.name.toLowerCase().includes(b.customerName.toLowerCase()));
+        if (found) {
+          setSelectedCustomerId(found.id);
+          setWalkinName(found.name);
+          setWalkinPhone(found.phone || '');
+        } else {
+          setSelectedCustomerId('');
+          setWalkinName(b.customerName);
+          setWalkinPhone(b.customerPhone || '');
+        }
+      }
+
+      if (Array.isArray(b.items) && b.items.length > 0) {
+        setItems(
+          b.items.map((it) => ({
+            productId: it.productId,
+            quantity: it.quantity,
+            unitPrice: it.unitPrice
+          }))
+        );
+      }
+
+      if (b.discount !== undefined) {
+        setDiscount(String(b.discount));
+      }
+    }
+
+    // Confirm Sale
+    if (res.action?.type === 'CONFIRM_SALE') {
+      setTimeout(() => {
+        handleConfirmSale();
+      }, 1000);
+    }
+
+    // Print or Reprint
+    if (res.action?.type === 'PRINT_BILL' || res.action?.type === 'REPRINT_INVOICE') {
+      setTimeout(() => {
+        if (completedSale) {
+          setSelectedInvoiceForModal(completedSale);
+          setIsDraftInvoiceModal(false);
+          setIsInvoiceModalOpen(true);
+        } else {
+          handleOpenDraftInvoice();
+        }
+        window.print();
+      }, 1000);
+    }
+  };
+
+  // Read Bill aloud in Telugu
+  const handleReadBillAloud = () => {
+    if (items.length === 0 || subtotal <= 0) {
+      const msg = 'ప్రస్తుత బిల్లులో ఎటువంటి పెయింట్లు లేవు. దయచేసి పెయింట్ డబ్బాలు వేయండి.';
+      setVoiceStatus(msg);
+      speakTeluguText(msg);
+      return;
+    }
+
+    const itemsSummary = calculatedItems
+      .map((it) => `${it.quantity} డబ్బా ${it.productName} (${it.packSize}) ${settings.currency}${it.total.toLocaleString('en-IN')}`)
+      .join(', ');
+
+    const readout = `${customerDisplayName} గారి బిల్లులో: ${itemsSummary} ఉన్నాయి. మొత్తం ${settings.currency}${netTotal.toLocaleString('en-IN')}. బిల్లును ఖరారు చేయమంటారా?`;
+    setIsVoiceSpeaking(true);
+    setVoiceStatus(readout);
+    speakTeluguText(readout, () => setIsVoiceSpeaking(false));
+  };
+
+  // Cancel / Reset Draft Safely
+  const handleCancelVoiceDraft = () => {
+    resetActiveVoiceSession();
+    setSelectedCustomerId('');
+    setWalkinName('');
+    setWalkinPhone('');
+    setDiscount('0');
+    setNotes('');
+    setItems([
+      {
+        productId: products[0]?.id || '',
+        quantity: 1,
+        unitPrice: products[0]?.unitPrice || 0
+      }
+    ]);
+    const cancelMsg = 'డ్రాఫ్ట్ బిల్లు రద్దు చేయబడింది. స్టాక్ తగ్గించబడలేదు.';
+    setVoiceStatus(cancelMsg);
+    setVoiceTranscript('');
+    speakTeluguText(cancelMsg);
+  };
+
 
   // Multi-item cart
   const [items, setItems] = useState([
@@ -270,6 +474,155 @@ export const SalesPage = () => {
 
   return (
     <div className="page-content">
+      {/* SRI BASKARA TELUGU VOICE BILLING DECK (Built for Father) */}
+      <div className="voice-billing-deck no-print">
+        <div className="voice-deck-top-bar">
+          <div className="voice-deck-brand">
+            <div className="voice-deck-emblem">
+              <Sparkles size={18} color="#141414" />
+            </div>
+            <div>
+              <h3 className="voice-deck-title">శ్రీ భాస్కర వాయిస్ బిల్లింగ్ డెక్ (Father's Voice Assistant)</h3>
+              <p className="voice-deck-subtitle">SRI BASKARA PAINTS AGENCIES • NATURAL TELUGU VOICE BILLING</p>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span style={{ fontSize: '0.78rem', color: '#D4AF37', fontWeight: 700 }}>
+              {isVoiceListening ? '🔴 రికార్డింగ్ ఆన్' : isVoiceSpeaking ? '🔊 మాట్లాడుతోంది' : '⚡ వాయిస్ కౌంటర్ సిద్ధం'}
+            </span>
+          </div>
+        </div>
+
+        <div className="voice-deck-center">
+          {/* Large Pulsing Mic Button */}
+          <button
+            type="button"
+            className={`voice-deck-mic-button ${isVoiceListening ? 'listening' : ''} ${isVoiceSpeaking ? 'speaking' : ''}`}
+            onClick={handleStartVoiceBilling}
+            title={isVoiceListening ? 'Stop listening' : 'మైక్ నొక్కి తెలుగులో మాట్లాడండి'}
+          >
+            {isVoiceListening ? (
+              <Radio size={36} />
+            ) : isVoiceSpeaking ? (
+              <Volume2 size={36} />
+            ) : (
+              <Mic size={36} />
+            )}
+          </button>
+
+          <div className="voice-deck-status-box">
+            <div className="voice-deck-status-text">
+              {voiceStatus}
+            </div>
+            <div className="voice-deck-subtext">
+              ఉదాహరణ: "సారథి, భువన్ పేరు మీద కొత్త బిల్లు రాయి", "ఆసియన్ పెయింట్స్ రాయల్ ఒక లీటర్ రెండు డబ్బాలు వేయి", "వైట్ ప్రైమర్ ఒక డబ్బా వేయి", "బిల్లు మొత్తం ఎంత?"
+            </div>
+
+            {voiceTranscript && (
+              <div className="voice-deck-transcript">
+                <strong>మీరు అన్నది:</strong> "{voiceTranscript}"
+              </div>
+            )}
+
+            {voiceError && (
+              <div style={{ marginTop: '8px', color: '#FCA5A5', fontSize: '0.82rem', fontWeight: 600 }}>
+                {voiceError}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* 4 Large Tactile Action Buttons for Spoken Workflow */}
+        <div className="voice-deck-actions">
+          <button
+            type="button"
+            className="voice-deck-btn confirm"
+            onClick={handleConfirmSale}
+            disabled={isSubmitting || items.length === 0}
+            title="బిల్లును వెంటనే ఖరారు చేసి స్టాక్ లెడ్జర్‌ను అప్‌డేట్ చేయండి"
+          >
+            <CheckCircle size={18} />
+            <span>ఖరారు చేయి (Confirm Sale)</span>
+          </button>
+
+          <button
+            type="button"
+            className="voice-deck-btn replay"
+            onClick={handleReadBillAloud}
+            title="బిల్లులోని వస్తువులు మరియు మొత్తం విలువను తెలుగులో మళ్లీ చదివి వినిపిస్తుంది"
+          >
+            <Volume2 size={18} />
+            <span>బిల్లు చదువు (Read Aloud)</span>
+          </button>
+
+          <button
+            type="button"
+            className="voice-deck-btn edit"
+            onClick={handleOpenDraftInvoice}
+            title="A4 రసీదు ప్రివ్యూను చూపిస్తుంది"
+          >
+            <Eye size={18} />
+            <span>రసీదు ప్రివ్యూ (Preview A4)</span>
+          </button>
+
+          <button
+            type="button"
+            className="voice-deck-btn cancel"
+            onClick={handleCancelVoiceDraft}
+            title="ప్రస్తుత డ్రాఫ్ట్ బిల్లును రద్దు చేయండి (స్టాక్ తగ్గించబడదు)"
+          >
+            <RotateCcw size={18} />
+            <span>డ్రాఫ్ట్ రద్దు చేయి (Cancel Draft)</span>
+          </button>
+
+          {/* Quick Fallback Text Form */}
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (!voiceTextInput.trim()) return;
+              handleSpokenBillingQuery(voiceTextInput);
+              setVoiceTextInput('');
+            }}
+            style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '8px' }}
+          >
+            <input
+              type="text"
+              placeholder="లేదా ఇక్కడ ప్రశ్న టైప్ చేయండి..."
+              value={voiceTextInput}
+              onChange={(e) => setVoiceTextInput(e.target.value)}
+              style={{
+                background: '#1F1F1F',
+                border: '1px solid rgba(212, 175, 55, 0.3)',
+                borderRadius: '100px',
+                padding: '8px 14px',
+                fontSize: '0.82rem',
+                color: '#FFFFFF',
+                width: '240px'
+              }}
+            />
+            <button
+              type="submit"
+              disabled={!voiceTextInput.trim()}
+              style={{
+                background: 'linear-gradient(135deg, #D4AF37 0%, #996515 100%)',
+                color: '#141414',
+                width: '32px',
+                height: '32px',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer'
+              }}
+              title="Send"
+            >
+              <Send size={14} />
+            </button>
+          </form>
+        </div>
+      </div>
+
       {/* Voice Bill Loaded Notification Banner */}
       {voiceBillBanner && (
         <div

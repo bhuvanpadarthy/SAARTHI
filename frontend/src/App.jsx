@@ -73,7 +73,7 @@ const MainLayout = () => {
           </div>
           <div className="voice-btn-text">
             <span className="voice-title">తెలుగు అసిస్టెంట్</span>
-            <span className="voice-sub">మాట్లాడండి • Voice AI</span>
+            <span className="voice-sub">వాయిస్ AI • మాట్లాడండి</span>
           </div>
         </button>
 

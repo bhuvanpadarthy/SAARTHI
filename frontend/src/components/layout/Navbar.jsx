@@ -63,7 +63,7 @@ export const Navbar = ({ onOpenSidebar, onOpenVoiceAssistant }) => {
             </div>
             <div className="page-breadcrumb">
               <span className="eyebrow-dot" style={{ display: 'inline-block' }} />
-              <span>{settings.shopName || 'Rangoli Paints Guntur'}</span>
+              <span>{settings.shopName || 'SRI BASKARA PAINTS AGENCIES'}</span>
               <span>•</span>
               <span style={{ textTransform: 'capitalize' }}>{activePage}</span>
             </div>

@@ -9,7 +9,7 @@ const getInitialState = () => ({
     {
       id: DEFAULT_SHOP_ID,
       shop_id: 'SHOP-HYD-042',
-      name: 'SAARTHI Paints & Hardware Depot',
+      name: 'SRI BASKARA PAINTS AGENCIES',
       tagline: 'Authorized Dealer — Asian Paints, Berger & Dr. Fixit',
       owner_name: 'V. K. Aggarwal & Sons',
       phone: '+91 98765-01234',

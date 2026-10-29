@@ -58,18 +58,18 @@ export const Sidebar = ({ isOpen, onClose }) => {
       <aside className={`app-sidebar no-print ${isOpen ? 'open' : ''} ${appMode === 'ai' ? 'sidebar-ai-glow' : 'sidebar-real-glow'}`}>
         <div className="sidebar-header">
           <div className="brand-badge" style={{ gap: '12px', alignItems: 'center' }}>
-            <span className="brand-mark" aria-hidden="true" title="Rangoli Paints Guntur">
+            <span className="brand-mark" aria-hidden="true" title="SRI BASKARA PAINTS AGENCIES">
               <span />
               <span />
               <span />
               <span />
             </span>
             <div className="brand-text">
-              <h1 style={{ fontSize: '1.18rem', letterSpacing: '-0.03em', lineHeight: 1.1, margin: 0 }}>
-                Rangoli <span style={{ color: 'var(--red)', fontStyle: 'italic', fontFamily: 'var(--font-serif)' }}>Paints</span>
+              <h1 style={{ fontSize: '1.02rem', letterSpacing: '-0.02em', lineHeight: 1.15, margin: 0, fontWeight: 800 }}>
+                SRI BASKARA <span style={{ color: 'var(--red)', fontStyle: 'italic', fontFamily: 'var(--font-serif)' }}>PAINTS</span>
               </h1>
-              <div className="brand-subtitle" style={{ font: '9.5px/1.2 var(--font-mono)', letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--muted)', marginTop: '4px' }}>
-                {appMode === 'ai' ? 'AI COPILOT • GUNTUR' : 'GUNTUR • MAKE ROOM FOR COLOR'}
+              <div className="brand-subtitle" style={{ font: '9px/1.2 var(--font-mono)', letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--muted)', marginTop: '4px' }}>
+                {appMode === 'ai' ? 'AI COPILOT • AGENCIES' : 'AGENCIES • MAKE ROOM FOR COLOR'}
               </div>
             </div>
             {isOpen && (

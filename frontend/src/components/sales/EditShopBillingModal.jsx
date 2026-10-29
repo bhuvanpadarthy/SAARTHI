@@ -207,7 +207,7 @@ export const EditShopBillingModal = ({ isOpen, onClose, onUpdated }) => {
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '8px' }}>
                 <div>
                   <div style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--gold-light)' }}>
-                    {formData.shopName || 'SAARTHI Paints & Hardware Depot'}
+                    {formData.shopName || 'SRI BASKARA PAINTS AGENCIES'}
                   </div>
                   {formData.tagline && (
                     <div style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', marginTop: '2px' }}>
@@ -297,7 +297,7 @@ export const EditShopBillingModal = ({ isOpen, onClose, onUpdated }) => {
                     type="text"
                     name="shopName"
                     className="form-control"
-                    placeholder="e.g. Sri Lakshmi Paints & Hardware Depot"
+                    placeholder="e.g. SRI BASKARA PAINTS AGENCIES"
                     value={formData.shopName}
                     onChange={handleChange}
                     required

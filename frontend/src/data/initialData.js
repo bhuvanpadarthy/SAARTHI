@@ -436,11 +436,11 @@ export const INITIAL_SALES = [
 
 export const INITIAL_SETTINGS = {
   shopId: 'SHOP-HYD-042',
-  shopName: 'SAARTHI Paints & Hardware Depot',
+  shopName: 'SRI BASKARA PAINTS AGENCIES',
   tagline: 'Authorized Dealer — Asian Paints, Berger & Dr. Fixit',
-  ownerName: 'V. K. Aggarwal & Sons',
+  ownerName: 'Sri Baskara & Sons',
   phone: '+91 98765-01234',
-  email: 'saarthi.paints@example.com',
+  email: 'baskara.paints@example.com',
   address: 'Shop 14-16, Paints & Hardware Market, GT Road',
   gstin: '07AAAAA1234B1Z5',
   billPrefix: 'PB-2026-',
@@ -449,5 +449,5 @@ export const INITIAL_SETTINGS = {
   lowStockThreshold: 5,
   enableGstDisplay: true,
   taxRatePercent: 18,
-  billFooterNote: 'Thank you for choosing SAARTHI Paints! Goods once tinted to custom shade cannot be returned.'
+  billFooterNote: 'Thank you for choosing SRI BASKARA PAINTS AGENCIES! Goods once tinted to custom shade cannot be returned.'
 };

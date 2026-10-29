@@ -103,11 +103,10 @@ export const EditShopBillingModal = ({ isOpen, onClose, onUpdated }) => {
           maxHeight: '90vh',
           display: 'flex',
           flexDirection: 'column',
-          background: 'var(--bg-glass-card)',
-          backdropFilter: 'blur(24px)',
-          border: '1px solid rgba(255, 255, 255, 0.1)',
+          background: '#FFFFFF',
+          border: '1px solid #E9ECEF',
           borderRadius: 'var(--radius-xl)',
-          boxShadow: '0 24px 60px rgba(0, 0, 0, 0.65)'
+          boxShadow: 'var(--shadow-xl)'
         }}
       >
         {/* Modal Header */}
@@ -118,7 +117,8 @@ export const EditShopBillingModal = ({ isOpen, onClose, onUpdated }) => {
             alignItems: 'center',
             justifyContent: 'space-between',
             padding: '18px 24px',
-            borderBottom: '1px solid rgba(255, 255, 255, 0.08)'
+            borderBottom: '1px solid #E9ECEF',
+            backgroundColor: '#FAFCFE'
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -127,14 +127,15 @@ export const EditShopBillingModal = ({ isOpen, onClose, onUpdated }) => {
                 width: '38px',
                 height: '38px',
                 borderRadius: '10px',
-                background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.25), rgba(6, 182, 212, 0.25))',
+                background: 'var(--gradient-ocean)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                border: '1px solid rgba(99, 102, 241, 0.4)'
+                boxShadow: 'var(--shadow-ocean)',
+                color: '#042940'
               }}
             >
-              <Building2 size={20} color="var(--brand-primary-light)" />
+              <Building2 size={20} color="#042940" />
             </div>
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -180,10 +181,10 @@ export const EditShopBillingModal = ({ isOpen, onClose, onUpdated }) => {
             {/* Live Preview Card */}
             <div
               style={{
-                background: 'rgba(15, 23, 42, 0.55)',
-                border: '1px solid rgba(99, 102, 241, 0.25)',
+                background: '#F8FAFC',
+                border: '1px solid #E2E8F0',
                 borderRadius: 'var(--radius-lg)',
-                padding: '14px 18px',
+                padding: '16px 20px',
                 position: 'relative'
               }}
             >
@@ -192,15 +193,15 @@ export const EditShopBillingModal = ({ isOpen, onClose, onUpdated }) => {
                   fontSize: '0.7rem',
                   textTransform: 'uppercase',
                   letterSpacing: '0.08em',
-                  color: 'var(--brand-primary-light)',
-                  fontWeight: 700,
+                  color: '#0284C7',
+                  fontWeight: 800,
                   marginBottom: '8px',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '6px'
                 }}
               >
-                <Receipt size={13} />
+                <Receipt size={13} color="#0284C7" />
                 <span>Live Bill Header Preview</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '8px' }}>
@@ -217,7 +218,7 @@ export const EditShopBillingModal = ({ isOpen, onClose, onUpdated }) => {
                     {formData.address || 'Shop Address Location'}
                     {formData.phone ? ` • Phone: ${formData.phone}` : ''}
                   </div>
-                  <div style={{ fontSize: '0.75rem', color: 'var(--cyan-400)', marginTop: '4px', display: 'flex', gap: '12px' }}>
+                  <div style={{ fontSize: '0.75rem', color: '#0369A1', marginTop: '4px', display: 'flex', gap: '12px', fontWeight: 600 }}>
                     <span>Store ID: <strong>{formData.shopId || 'N/A'}</strong></span>
                     <span>GSTIN: <strong>{formData.gstin || 'Unregistered / Retail'}</strong></span>
                   </div>
@@ -225,15 +226,16 @@ export const EditShopBillingModal = ({ isOpen, onClose, onUpdated }) => {
 
                 <div
                   style={{
-                    background: 'rgba(255, 255, 255, 0.05)',
-                    padding: '6px 12px',
+                    background: '#FFFFFF',
+                    padding: '8px 14px',
                     borderRadius: 'var(--radius-md)',
-                    border: '1px solid rgba(255, 255, 255, 0.08)',
-                    textAlign: 'right'
+                    border: '1px solid #E2E8F0',
+                    textAlign: 'right',
+                    boxShadow: 'var(--shadow-xs)'
                   }}
                 >
                   <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)' }}>Next Bill Code</div>
-                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.9rem', fontWeight: 700, color: 'var(--amber-400)' }}>
+                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.95rem', fontWeight: 800, color: '#0284C7' }}>
                     {formData.billPrefix}{formData.nextBillNumber}
                   </div>
                 </div>
@@ -526,3 +528,4 @@ export const EditShopBillingModal = ({ isOpen, onClose, onUpdated }) => {
     </div>
   );
 };
+

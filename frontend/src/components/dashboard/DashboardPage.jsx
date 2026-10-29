@@ -112,8 +112,8 @@ export const DashboardPage = () => {
             <>
               <div className="telemetry-card">
                 <div className="telemetry-label">
-                  <Sparkles size={13} color="#6366F1" />
-                  <span>Predictive Demand AI</span>
+                  <Sparkles size={13} color="var(--gold-primary)" />
+                  <span>Predictive Demand Analysis</span>
                 </div>
                 <div className="telemetry-text">
                   <strong>+38% surge predicted</strong> in exterior whites & primers for pre-festival repainting.
@@ -121,7 +121,7 @@ export const DashboardPage = () => {
               </div>
               <div className="telemetry-card">
                 <div className="telemetry-label">
-                  <Bot size={13} color="#06B6D4" />
+                  <Bot size={13} color="var(--gold-light)" />
                   <span>Smart Tint Formulator</span>
                 </div>
                 <div className="telemetry-text">

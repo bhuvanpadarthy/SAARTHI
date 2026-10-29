@@ -111,7 +111,7 @@ export const Navbar = ({ onOpenSidebar, onOpenVoiceAssistant }) => {
             onClick={onOpenVoiceAssistant}
             title="సారథి తెలుగు వాయిస్ అసిస్టెంట్ ఓపెన్ చేయండి (Open Telugu Voice Assistant)"
           >
-            <Mic size={14} color="#FF6B00" />
+            <Mic size={14} color="var(--gold-primary)" />
             <span>తెలుగు వాయిస్</span>
           </button>
 

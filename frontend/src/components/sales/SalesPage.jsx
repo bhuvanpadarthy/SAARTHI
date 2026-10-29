@@ -20,11 +20,14 @@ import {
   MapPin,
   TrendingDown,
   Info,
-  Search
+  Search,
+  Building2,
+  Edit3
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { InvoiceModal } from '../invoice/InvoiceModal';
 import { SAMPLE_INVOICE_FIXTURE } from '../invoice/sampleInvoiceFixture';
+import { EditShopBillingModal } from './EditShopBillingModal';
 
 export const SalesPage = () => {
   const { products, customers, sales, settings, createSale, setActivePage } = useApp();
@@ -55,6 +58,7 @@ export const SalesPage = () => {
   const [selectedInvoiceForModal, setSelectedInvoiceForModal] = useState(null);
   const [isInvoiceModalOpen, setIsInvoiceModalOpen] = useState(false);
   const [isDraftInvoiceModal, setIsDraftInvoiceModal] = useState(false);
+  const [isEditShopModalOpen, setIsEditShopModalOpen] = useState(false);
 
   // Stock Availability Checker state
   const [isStockCheckerOpen, setIsStockCheckerOpen] = useState(false);
@@ -231,6 +235,17 @@ export const SalesPage = () => {
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={() => setIsEditShopModalOpen(true)}
+            title="Edit shop name, store ID, GSTIN, phone, address, and bill sequence"
+            style={{ display: 'flex', alignItems: 'center', gap: '7px' }}
+          >
+            <Building2 size={16} color="var(--brand-primary-light)" />
+            <span>Edit Shop & Bill Details</span>
+          </button>
+
           <button
             type="button"
             className="btn btn-primary"
@@ -586,22 +601,42 @@ export const SalesPage = () => {
         {/* Right: Last Bill / Paper Bill Preview Quick Card */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           <div className="card">
-            <div className="card-header">
+            <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div className="card-title">
-                <Printer size={18} color="var(--navy-700)" />
+                <Printer size={18} color="var(--brand-primary-light)" />
                 Paper Bill Format Sample
               </div>
-              <span className="badge badge-brand">Official Layout</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <button
+                  type="button"
+                  className="btn btn-sm btn-outline"
+                  onClick={() => setIsEditShopModalOpen(true)}
+                  style={{ fontSize: '0.74rem', padding: '3px 8px', display: 'flex', alignItems: 'center', gap: '4px' }}
+                  title="Edit shop name, store ID, GSTIN, and billing header details"
+                >
+                  <Edit3 size={12} /> Edit Shop Info
+                </button>
+                <span className="badge badge-brand">Official Layout</span>
+              </div>
             </div>
             <div className="card-body">
               <div className="bill-paper-sheet">
                 <div className="bill-watermark">SAMPLE BILL PREVIEW</div>
                 <div className="bill-header-row">
-                  <div>
-                    <div className="bill-shop-name">{settings.shopName}</div>
+                  <div
+                    onClick={() => setIsEditShopModalOpen(true)}
+                    style={{ cursor: 'pointer' }}
+                    title="Click to edit shop name, ID, and details"
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <div className="bill-shop-name">{settings.shopName}</div>
+                      <Edit3 size={13} color="var(--brand-primary-light)" style={{ opacity: 0.8 }} />
+                    </div>
                     <div className="bill-meta-tag">{settings.tagline}</div>
                     <div className="bill-meta-tag">{settings.address}</div>
-                    <div className="bill-meta-tag">GSTIN: {settings.gstin}</div>
+                    <div className="bill-meta-tag" style={{ color: 'var(--cyan-400)', fontWeight: 600 }}>
+                      Store ID: {settings.shopId || 'SHOP-HYD-042'} | GSTIN: {settings.gstin}
+                    </div>
                   </div>
                   <div className="bill-no-box">
                     <div className="bill-no-title">Paper Bill No.</div>
@@ -786,9 +821,25 @@ export const SalesPage = () => {
               <div className="bill-paper-sheet" style={{ marginBottom: '16px' }}>
                 <div className="bill-header-row">
                   <div>
-                    <div className="bill-shop-name">{settings.shopName}</div>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' }}>
+                      <div className="bill-shop-name">{settings.shopName}</div>
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-outline"
+                        onClick={() => {
+                          setIsReviewOpen(false);
+                          setIsEditShopModalOpen(true);
+                        }}
+                        style={{ fontSize: '0.72rem', padding: '2px 8px', display: 'flex', alignItems: 'center', gap: '4px' }}
+                        title="Edit shop name, store ID, and billing details"
+                      >
+                        <Edit3 size={12} /> Edit Header
+                      </button>
+                    </div>
                     <div className="bill-meta-tag">{settings.address}</div>
-                    <div className="bill-meta-tag">Phone: {settings.phone} | GSTIN: {settings.gstin}</div>
+                    <div className="bill-meta-tag">
+                      Store ID: {settings.shopId || 'SHOP-HYD-042'} | Phone: {settings.phone} | GSTIN: {settings.gstin}
+                    </div>
                   </div>
                   <div className="bill-no-box">
                     <div className="bill-no-title">Paper Bill #</div>
@@ -1207,6 +1258,17 @@ export const SalesPage = () => {
         onClose={() => setIsInvoiceModalOpen(false)}
         sale={selectedInvoiceForModal}
         isDraft={isDraftInvoiceModal}
+      />
+
+      {/* Edit Shop & Billing Details Modal */}
+      <EditShopBillingModal
+        isOpen={isEditShopModalOpen}
+        onClose={() => setIsEditShopModalOpen(false)}
+        onUpdated={(updated) => {
+          if (updated.billPrefix && (!billNumber || billNumber.startsWith(settings.billPrefix))) {
+            setBillNumber(`${updated.billPrefix}${updated.nextBillNumber || settings.nextBillNumber}`);
+          }
+        }}
       />
     </div>
   );

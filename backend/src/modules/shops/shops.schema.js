@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 export const updateShopSettingsSchema = z.object({
   name: z.string().min(1, 'Shop name cannot be empty').optional(),
+  shop_id: z.string().optional().nullable(),
   tagline: z.string().optional().nullable(),
   owner_name: z.string().optional().nullable(),
   phone: z.string().optional().nullable(),

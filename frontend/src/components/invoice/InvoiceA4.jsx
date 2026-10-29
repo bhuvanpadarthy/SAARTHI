@@ -91,6 +91,11 @@ export const InvoiceA4 = ({
             {settings.email && <span> • {settings.email}</span>}
           </div>
           <div className="a4-shop-tax-id">
+            {settings.shopId && (
+              <span style={{ marginRight: '12px', color: '#334155' }}>
+                <strong>Store ID: {settings.shopId}</strong>
+              </span>
+            )}
             {hasGst ? (
               <strong>GSTIN / పన్ను నంబర్: {settings.gstin}</strong>
             ) : (

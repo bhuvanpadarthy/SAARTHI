@@ -96,6 +96,8 @@ const normalizeSale = (s) => ({
 
 const normalizeSettings = (s) => ({
   ...s,
+  shopId: s.shopId || s.shop_id || 'SHOP-HYD-042',
+  shop_id: s.shopId || s.shop_id || 'SHOP-HYD-042',
   shopName: s.name || s.shopName || 'SAARTHI Paints & Hardware Depot',
   name: s.name || s.shopName || 'SAARTHI Paints & Hardware Depot',
   tagline: s.tagline || 'Authorized Dealer — Asian Paints, Berger & Dr. Fixit',
@@ -604,6 +606,7 @@ export const AppProvider = ({ children }) => {
       if (isBackendConnected) {
         const payload = {
           name: newSettings.shopName || newSettings.name,
+          shop_id: newSettings.shopId || newSettings.shop_id || undefined,
           tagline: newSettings.tagline,
           owner_name: newSettings.ownerName || newSettings.owner_name,
           phone: newSettings.phone,

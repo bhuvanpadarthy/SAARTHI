@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Printer, X, Languages, AlertCircle, CheckCircle2, ShieldCheck, Download } from 'lucide-react';
+import { Printer, X, Languages, AlertCircle, CheckCircle2, ShieldCheck, Download, Building2 } from 'lucide-react';
 import { InvoiceA4 } from './InvoiceA4';
+import { EditShopBillingModal } from '../sales/EditShopBillingModal';
 
 export const InvoiceModal = ({
   isOpen,
@@ -10,6 +11,7 @@ export const InvoiceModal = ({
 }) => {
   const [language, setLanguage] = useState('bilingual'); // 'bilingual' | 'english' | 'telugu'
   const [printDispatched, setPrintDispatched] = useState(false);
+  const [isEditShopOpen, setIsEditShopOpen] = useState(false);
 
   if (!isOpen || !sale) return null;
 
@@ -48,6 +50,18 @@ export const InvoiceModal = ({
           </div>
 
           <div className="toolbar-right">
+            {/* Quick Edit Shop Details for Live Invoice Updation */}
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={() => setIsEditShopOpen(true)}
+              title="Edit shop name, store ID, GSTIN, and bill header details"
+              style={{ padding: '5px 12px', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '6px' }}
+            >
+              <Building2 size={14} color="var(--brand-primary-light)" />
+              <span>Edit Shop Details</span>
+            </button>
+
             {/* Language Selector */}
             <div className="lang-switcher">
               <Languages size={15} color="var(--slate-500)" />
@@ -114,6 +128,12 @@ export const InvoiceModal = ({
         <div className="a4-sheet-scroller">
           <InvoiceA4 sale={sale} isDraft={isDraft} language={language} />
         </div>
+
+        {/* Edit Shop & Billing Details Modal */}
+        <EditShopBillingModal
+          isOpen={isEditShopOpen}
+          onClose={() => setIsEditShopOpen(false)}
+        />
       </div>
     </div>
   );

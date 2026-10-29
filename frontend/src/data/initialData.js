@@ -435,6 +435,7 @@ export const INITIAL_SALES = [
 ];
 
 export const INITIAL_SETTINGS = {
+  shopId: 'SHOP-HYD-042',
   shopName: 'SAARTHI Paints & Hardware Depot',
   tagline: 'Authorized Dealer — Asian Paints, Berger & Dr. Fixit',
   ownerName: 'V. K. Aggarwal & Sons',

@@ -494,3 +494,4 @@ export const PluginsModal = ({ isOpen, onClose }) => {
     </div>
   );
 };
+

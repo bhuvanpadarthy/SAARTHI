@@ -11,7 +11,17 @@ import {
   CheckCircle,
   Eye,
   DollarSign,
-  Printer
+  Printer,
+  Bot,
+  BrainCircuit,
+  Sparkles,
+  ShieldCheck,
+  Scan,
+  QrCode,
+  SlidersHorizontal,
+  Activity,
+  Zap,
+  Truck
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { InvoiceModal } from '../invoice/InvoiceModal';
@@ -26,7 +36,10 @@ export const DashboardPage = () => {
     totalInventoryValuation,
     totalStockUnits,
     totalOutstandingCredit,
-    setActivePage
+    setActivePage,
+    appMode,
+    setAppMode,
+    plugins
   } = useApp();
 
   const [selectedInvoiceForModal, setSelectedInvoiceForModal] = useState(null);
@@ -49,6 +62,116 @@ export const DashboardPage = () => {
 
   return (
     <div className="page-content">
+      {/* Advanced Model: Operating Mode & Plugins Telemetry Banner */}
+      <div className={`operating-mode-banner ${appMode === 'ai' ? 'ai-banner' : 'real-banner'}`}>
+        <div className="banner-content">
+          <div className="banner-left">
+            <div className="banner-badge-icon">
+              {appMode === 'ai' ? <BrainCircuit size={24} /> : <Printer size={24} />}
+            </div>
+            <div>
+              <div className="banner-heading">
+                <span>{appMode === 'ai' ? '🤖 AI Copilot & Neural Paint Telemetry' : '🏢 Real-World Physical Shop Terminal'}</span>
+                <span className={`banner-chip ${appMode === 'ai' ? 'ai-chip' : 'real-chip'}`}>
+                  {appMode === 'ai' ? 'Autonomous Mode' : 'Hardware Ready'}
+                </span>
+              </div>
+              <p className="banner-subtitle">
+                {appMode === 'ai'
+                  ? 'Real-time paint forecasting, automated shade tint formulation, and Telugu/English voice copilot active.'
+                  : 'Fast-flow paper bill counter, physical ESC/POS receipt generation, and depot challan ledger active.'}
+              </p>
+            </div>
+          </div>
+
+          <div className="banner-actions">
+            <div className="mode-pill-toggle">
+              <button
+                type="button"
+                className={`mode-sub-btn ${appMode === 'ai' ? 'selected' : ''}`}
+                onClick={() => setAppMode('ai')}
+              >
+                <Bot size={13} />
+                <span>AI Mode</span>
+              </button>
+              <button
+                type="button"
+                className={`mode-sub-btn ${appMode === 'real' ? 'selected' : ''}`}
+                onClick={() => setAppMode('real')}
+              >
+                <Printer size={13} />
+                <span>Real Mode</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* 3 Live Telemetry Chips */}
+        <div className="banner-telemetry-grid">
+          {appMode === 'ai' ? (
+            <>
+              <div className="telemetry-card">
+                <div className="telemetry-label">
+                  <Sparkles size={13} color="#6366F1" />
+                  <span>Predictive Demand AI</span>
+                </div>
+                <div className="telemetry-text">
+                  <strong>+38% surge predicted</strong> in exterior whites & primers for pre-festival repainting.
+                </div>
+              </div>
+              <div className="telemetry-card">
+                <div className="telemetry-label">
+                  <Bot size={13} color="#06B6D4" />
+                  <span>Smart Tint Formulator</span>
+                </div>
+                <div className="telemetry-text">
+                  Colorant dispenser calibration: <strong>Optimal (99.8%)</strong>. 12 formulations ready.
+                </div>
+              </div>
+              <div className="telemetry-card">
+                <div className="telemetry-label">
+                  <ShieldCheck size={13} color="#10B981" />
+                  <span>Khata Credit Intelligence</span>
+                </div>
+                <div className="telemetry-text">
+                  Top contractor repayment risk score: <strong>Low Risk (94/100)</strong>. Safe to extend credit.
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="telemetry-card real">
+                <div className="telemetry-label">
+                  <Printer size={13} color="#059669" />
+                  <span>POS Hardware Link</span>
+                </div>
+                <div className="telemetry-text">
+                  Thermal Slip (80mm) & Legal A4: <strong>Ready</strong> • Bill Sequence Lock: <strong>Active</strong>.
+                </div>
+              </div>
+              <div className="telemetry-card real">
+                <div className="telemetry-label">
+                  <Truck size={13} color="#D97706" />
+                  <span>Physical Depot Ledger</span>
+                </div>
+                <div className="telemetry-text">
+                  Last Inward Delivery: <strong>Asian Paints Depot</strong> Challan #AP-8821 verified.
+                </div>
+              </div>
+              <div className="telemetry-card real">
+                <div className="telemetry-label">
+                  <QrCode size={13} color="#0284C7" />
+                  <span>Dynamic UPI Settlement</span>
+                </div>
+                <div className="telemetry-text">
+                  Instant NPCI QR generation & Cash Drawer kickout: <strong>Online</strong>.
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+
       {/* KPI Cards */}
       <div className="metrics-grid">
         {/* Total Products */}

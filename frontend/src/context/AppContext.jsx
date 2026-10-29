@@ -113,11 +113,109 @@ const normalizeSettings = (s) => ({
   billFooterNote: s.bill_footer_note || s.billFooterNote || '',
 });
 
+export const DEFAULT_PLUGINS = [
+  {
+    id: 'ai-copilot',
+    name: 'AI Paint Copilot & Voice',
+    description: 'Multilingual Telugu & English AI voice assistant with instant stock lookups, billing calculations & paint consultation.',
+    category: 'ai',
+    version: 'v2.4 Neural',
+    iconName: 'Bot',
+    enabled: true,
+    badge: 'AI Core'
+  },
+  {
+    id: 'ai-demand-forecast',
+    name: 'Predictive Paint Demand Forecasting',
+    description: 'Autonomous neural engine predicting seasonal exterior paint surges and depot stockouts 14 days in advance.',
+    category: 'ai',
+    version: 'v3.1 ML',
+    iconName: 'BrainCircuit',
+    enabled: true,
+    badge: 'Neural'
+  },
+  {
+    id: 'ai-tint-matcher',
+    name: 'Smart Shade & Tinting Formulator',
+    description: 'Calculates exact base paint tint codes, colorant shot volumes (Y, B, R), and custom shade tint costs.',
+    category: 'ai',
+    version: 'v1.8 Precision',
+    iconName: 'Sparkles',
+    enabled: true,
+    badge: 'Spectra'
+  },
+  {
+    id: 'ai-khata-risk',
+    name: 'Khata Credit Risk Intelligence',
+    description: 'AI credit scoring for painters & contractors to recommend safe borrowing limits before credit billing.',
+    category: 'ai',
+    version: 'v2.0 RiskGuard',
+    iconName: 'ShieldCheck',
+    enabled: true,
+    badge: 'Financial'
+  },
+  {
+    id: 'real-hardware-terminal',
+    name: 'Physical POS & Thermal Printing',
+    description: 'Production ESC/POS thermal receipt & A4 legal invoice generation with strict serial bill numbering.',
+    category: 'real',
+    version: 'v4.0 Hardware',
+    iconName: 'Printer',
+    enabled: true,
+    badge: 'Hardware'
+  },
+  {
+    id: 'real-depot-sync',
+    name: 'Depot Inward Goods & Challan Ledger',
+    description: 'Direct verification with Asian Paints, Berger & Dulux regional depots with inward challan number validation.',
+    category: 'real',
+    version: 'v2.2 Sync',
+    iconName: 'Truck',
+    enabled: true,
+    badge: 'Depot'
+  },
+  {
+    id: 'real-barcode-scanner',
+    name: 'Barcode & Can QR Fast-POS Scanner',
+    description: 'High-speed keyboard-wedge barcode and QR code reader directly streaming tins into cart.',
+    category: 'real',
+    version: 'v1.5 HID',
+    iconName: 'Scan',
+    enabled: true,
+    badge: 'Terminal'
+  },
+  {
+    id: 'real-upi-reconcile',
+    name: 'Dynamic UPI QR & Cash Drawer Guard',
+    description: 'Generates on-screen NPCI dynamic QR codes with instant transaction settlement confirmation.',
+    category: 'real',
+    version: 'v3.0 PayReady',
+    iconName: 'QrCode',
+    enabled: true,
+    badge: 'Settlement'
+  }
+];
+
 export const AppProvider = ({ children }) => {
   const [products, setProducts] = useState(() => INITIAL_PRODUCTS.map(normalizeProduct));
   const [customers, setCustomers] = useState(() => INITIAL_CUSTOMERS.map(normalizeCustomer));
   const [sales, setSales] = useState(() => INITIAL_SALES.map(normalizeSale));
   const [settings, setSettings] = useState(() => normalizeSettings(INITIAL_SETTINGS));
+
+  // Mode & Plugin state: 'ai' (AI Copilot Mode) | 'real' (Physical Paint Shop Terminal Mode)
+  const [appMode, setAppModeState] = useState(() => {
+    return localStorage.getItem('saarthi_app_mode') || 'ai';
+  });
+
+  const [plugins, setPlugins] = useState(() => {
+    try {
+      const saved = localStorage.getItem('saarthi_plugins');
+      if (saved) return JSON.parse(saved);
+    } catch (e) {
+      // ignore
+    }
+    return DEFAULT_PLUGINS;
+  });
 
   const [activePage, setActivePage] = useState('dashboard');
   const [notification, setNotification] = useState(null);
@@ -131,6 +229,28 @@ export const AppProvider = ({ children }) => {
     setTimeout(() => {
       setNotification((curr) => (curr && curr.id ? null : curr));
     }, 4500);
+  };
+
+  const setAppMode = (newMode) => {
+    setAppModeState(newMode);
+    localStorage.setItem('saarthi_app_mode', newMode);
+    if (newMode === 'ai') {
+      notify('Switched to 🤖 AI Copilot Mode — Autonomous forecasts, voice copilot & tinting calculator active.');
+    } else {
+      notify('Switched to 🏢 Real Mode — Physical shop terminal, hardware printer & depot ledger active.');
+    }
+  };
+
+  const togglePlugin = (pluginId) => {
+    setPlugins((prev) => {
+      const updated = prev.map((p) => (p.id === pluginId ? { ...p, enabled: !p.enabled } : p));
+      localStorage.setItem('saarthi_plugins', JSON.stringify(updated));
+      const target = updated.find((p) => p.id === pluginId);
+      if (target) {
+        notify(`Plugin "${target.name}" is now ${target.enabled ? 'Enabled' : 'Disabled'}.`, target.enabled ? 'success' : 'info');
+      }
+      return updated;
+    });
   };
 
   // Sync data from Express Backend
@@ -569,6 +689,10 @@ export const AppProvider = ({ children }) => {
         totalInventoryValuation,
         totalStockUnits,
         totalOutstandingCredit,
+        appMode,
+        setAppMode,
+        plugins,
+        togglePlugin,
       }}
     >
       {children}

@@ -1653,24 +1653,39 @@ a:hover {
   transform: translateX(20px);
 }
 
-/* Telugu Assistant Card */
+/* ==========================================================================
+   Telugu Voice Assistant Modal & Components (Rangoli Atelier Elegance)
+   ========================================================================== */
+
+.telugu-assistant-overlay {
+  z-index: 1050;
+}
+
 .telugu-assistant-card {
   background-color: var(--paper);
   border-radius: var(--radius-xl);
-  box-shadow: var(--shadow);
+  box-shadow: 0 24px 80px rgba(27, 23, 17, 0.28), 0 4px 16px rgba(0, 0, 0, 0.08);
   width: 100%;
   max-width: 580px;
   overflow: hidden;
   border: 1px solid var(--line);
+  animation: slideUp 0.24s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .assistant-header {
-  padding: 20px 24px;
+  padding: 18px 24px;
   background-color: var(--yellow);
   color: var(--ink);
   display: flex;
   align-items: center;
-  justifyContent: space-between;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(27, 23, 17, 0.12);
+}
+
+.assistant-header .header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .assistant-avatar {
@@ -1680,19 +1695,363 @@ a:hover {
   background-color: var(--ink);
   display: flex;
   align-items: center;
-  justifyContent: center;
+  justify-content: center;
   color: var(--yellow);
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(27, 23, 17, 0.25);
 }
 
 .assistant-title {
+  font-family: var(--font-telugu);
   font-size: 1.15rem;
   font-weight: 800;
   color: var(--ink);
+  line-height: 1.2;
 }
 
 .assistant-subtitle {
-  font-size: 0.78rem;
-  color: #554F46;
+  font: 10px/1.2 var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(27, 23, 17, 0.72);
+  margin-top: 2px;
+}
+
+.assistant-header .header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.assistant-lang-select {
+  background: rgba(27, 23, 17, 0.09);
+  color: var(--ink);
+  border: 1px solid rgba(27, 23, 17, 0.22);
+  padding: 6px 14px;
+  border-radius: 100px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.assistant-lang-select:hover {
+  background: rgba(27, 23, 17, 0.15);
+}
+
+.assistant-lang-select option {
+  background: #FFFFFF;
+  color: var(--ink);
+}
+
+.assistant-close-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(27, 23, 17, 0.09);
+  border: 1px solid rgba(27, 23, 17, 0.18);
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  outline: none;
+}
+
+.assistant-close-btn:hover {
+  background: var(--ink);
+  color: #FFFFFF;
+  border-color: var(--ink);
+}
+
+/* Central Mic Interaction Zone */
+.assistant-mic-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 24px 22px;
+  background: radial-gradient(circle at center, #FFFFFF 0%, var(--paper) 75%);
+  border-bottom: 1px solid var(--line);
+}
+
+.mic-pulsing-btn {
+  width: 86px;
+  height: 86px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--yellow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(27, 23, 17, 0.22);
+  cursor: pointer;
+  border: 3px solid rgba(247, 201, 72, 0.4);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  outline: none;
+}
+
+.mic-pulsing-btn:hover {
+  transform: scale(1.06);
+  box-shadow: 0 12px 30px rgba(27, 23, 17, 0.32);
+  border-color: var(--yellow);
+}
+
+.mic-pulsing-btn.listening {
+  background: linear-gradient(135deg, #DC2626 0%, #A94A35 100%);
+  color: #FFFFFF;
+  border-color: #EF4444;
+  box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7);
+  animation: pulse-ring-red 1.35s infinite;
+}
+
+.mic-pulsing-btn.speaking {
+  background: linear-gradient(135deg, #265D72 0%, #1B4555 100%);
+  color: var(--yellow);
+  border-color: #265D72;
+  box-shadow: 0 0 0 0 rgba(38, 93, 114, 0.7);
+  animation: pulse-ring-teal 1.35s infinite;
+}
+
+@keyframes pulse-ring-red {
+  0% {
+    box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 20px rgba(220, 38, 38, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(220, 38, 38, 0);
+  }
+}
+
+@keyframes pulse-ring-teal {
+  0% {
+    box-shadow: 0 0 0 0 rgba(38, 93, 114, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 20px rgba(38, 93, 114, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(38, 93, 114, 0);
+  }
+}
+
+.mic-status-label {
+  margin-top: 16px;
+  font-family: var(--font-telugu);
+  font-size: 0.86rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.status-listening {
+  color: #DC2626;
+  font-weight: 800;
+}
+
+.status-speaking {
+  color: var(--teal);
+  font-weight: 800;
+}
+
+.status-idle {
+  color: var(--muted);
+}
+
+.transcript-box {
+  margin-top: 14px;
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px 16px;
+  width: 100%;
+  max-width: 480px;
+  text-align: center;
+}
+
+.transcript-tag {
+  font: 9.5px/1 var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.transcript-text {
+  font-family: var(--font-telugu);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-top: 4px;
+}
+
+.assistant-error-bar {
+  margin-top: 12px;
+  background: rgba(169, 74, 53, 0.1);
+  border: 1px solid rgba(169, 74, 53, 0.3);
+  color: var(--red);
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-align: center;
+  max-width: 480px;
+}
+
+/* Answer Display Section */
+.assistant-answer-box {
+  padding: 18px 24px;
+  background: #FFFFFF;
+  border-bottom: 1px solid var(--line);
+}
+
+.answer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.answer-title {
+  font: 11px/1 var(--font-mono);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.answer-content-telugu {
+  font-family: var(--font-telugu);
+  font-size: 1.02rem;
+  font-weight: 600;
+  line-height: 1.6;
+  color: var(--ink);
+  background: var(--paper);
+  border-left: 4px solid var(--yellow);
+  padding: 12px 16px;
+  border-radius: 0 10px 10px 0;
+  margin-bottom: 8px;
+}
+
+.answer-content-english {
+  font-size: 0.82rem;
+  color: var(--muted);
+  font-style: italic;
+  padding-left: 16px;
+}
+
+.answer-action-row {
+  margin-top: 12px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Quick Suggestion Chips */
+.assistant-chips-section {
+  padding: 16px 24px;
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
+}
+
+.chips-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font: 10.5px/1 var(--font-mono);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.chips-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.query-chip {
+  background: #FFFFFF;
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  padding: 7px 13px;
+  font-family: var(--font-telugu);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--ink);
+  cursor: pointer;
+  transition: all 0.18s ease;
+  box-shadow: 0 1px 3px rgba(27, 23, 17, 0.04);
+  outline: none;
+}
+
+.query-chip:hover {
+  background: var(--yellow);
+  border-color: #E5B938;
+  color: var(--ink);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(247, 201, 72, 0.35);
+}
+
+/* Text Fallback Form */
+.assistant-input-form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 24px;
+  background: #FFFFFF;
+}
+
+.assistant-text-input {
+  flex: 1;
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  padding: 9px 16px;
+  font-family: var(--font-telugu);
+  font-size: 0.86rem;
+  outline: none;
+  background: var(--paper);
+  color: var(--ink);
+  transition: all 0.18s ease;
+}
+
+.assistant-text-input:focus {
+  background: #FFFFFF;
+  border-color: var(--ink);
+  box-shadow: 0 0 0 3px rgba(27, 23, 17, 0.08);
+}
+
+.assistant-send-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--yellow);
+  color: var(--ink);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(247, 201, 72, 0.4);
+  outline: none;
+}
+
+.assistant-send-btn:hover {
+  background: var(--yellow-hover);
+  transform: scale(1.05);
+}
+
+.assistant-send-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
 /* Animations */

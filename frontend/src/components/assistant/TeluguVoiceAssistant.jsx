@@ -196,11 +196,11 @@ export const TeluguVoiceAssistant = ({ isOpen, onClose }) => {
         <div className="assistant-header">
           <div className="header-left">
             <div className="assistant-avatar">
-              <Sparkles size={20} color="#FF6B00" />
+              <Sparkles size={20} color="var(--yellow)" />
             </div>
             <div>
-              <h3 className="assistant-title">సారథి తెలుగు వాయిస్ అసిస్టెంట్</h3>
-              <p className="assistant-subtitle">SAARTHI Live Paint-Shop Voice Advisor</p>
+              <h3 className="assistant-title">తెలుగు వాయిస్ అసిస్టెంట్</h3>
+              <p className="assistant-subtitle">SRI BASKARA PAINTS AGENCIES • Voice AI</p>
             </div>
           </div>
 

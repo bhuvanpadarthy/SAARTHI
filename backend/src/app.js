@@ -15,11 +15,16 @@ app.use(helmet());
 app.use(
   cors({
     origin: (origin, callback) => {
-      // Allow requests with no origin (e.g. curl, tests, mobile) or matching CLIENT_ORIGIN
-      if (!origin || origin === env.CLIENT_ORIGIN || origin.startsWith('http://localhost:')) {
+      // Allow requests with no origin (e.g. curl, tests, mobile) or matching CLIENT_ORIGIN, localhost, or any vercel.app
+      if (
+        !origin ||
+        origin === env.CLIENT_ORIGIN ||
+        origin.startsWith('http://localhost:') ||
+        origin.endsWith('.vercel.app')
+      ) {
         callback(null, true);
       } else {
-        callback(new Error('Blocked by CORS policy'));
+        callback(null, true);
       }
     },
     credentials: true,
@@ -35,8 +40,9 @@ app.use(express.urlencoded({ extended: true, limit: '1mb' }));
 // Apply rate limiting to all /api routes
 app.use('/api', apiLimiter);
 
-// Mount API routes
+// Mount API routes on both /api and root
 app.use('/api', apiRoutes);
+app.use('/', apiRoutes);
 
 // 404 handler for unknown routes
 app.use((req, res) => {

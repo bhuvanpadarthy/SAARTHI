@@ -144,7 +144,7 @@ export const InventoryPage = () => {
                 <th style={{ textAlign: 'center' }}>+ Received</th>
                 <th style={{ textAlign: 'center' }}>- Sold</th>
                 <th style={{ textAlign: 'center' }}>- Damaged</th>
-                <th style={{ textAlign: 'center', background: '#F1F5F9' }}>Current Balance</th>
+                <th style={{ textAlign: 'center', background: 'rgba(99, 102, 241, 0.12)', color: 'var(--brand-primary-light)' }}>Current Balance</th>
                 <th>Safety Alert</th>
                 <th>Actions</th>
               </tr>
@@ -198,7 +198,7 @@ export const InventoryPage = () => {
                         fontSize: '1.05rem',
                         fontWeight: 800,
                         color: isLow ? 'var(--rose-600)' : 'var(--navy-900)',
-                        backgroundColor: isLow ? '#FEF2F2' : '#F8FAFC'
+                        backgroundColor: isLow ? 'rgba(239, 68, 68, 0.15)' : 'rgba(99, 102, 241, 0.08)'
                       }}
                     >
                       {p.currentStock}

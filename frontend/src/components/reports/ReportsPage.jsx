@@ -307,7 +307,7 @@ export const ReportsPage = () => {
                     <th>Pack Size</th>
                     <th style={{ textAlign: 'center' }}>Current Stock</th>
                     <th style={{ textAlign: 'center' }}>Safety Level</th>
-                    <th style={{ textAlign: 'center', background: '#FFF7ED', color: 'var(--orange-600)' }}>
+                    <th style={{ textAlign: 'center', background: 'rgba(255, 107, 0, 0.12)', color: 'var(--brand-accent)' }}>
                       Suggested Reorder
                     </th>
                     <th>Distributor / Depot</th>
@@ -353,7 +353,7 @@ export const ReportsPage = () => {
                           <td style={{ textAlign: 'center', color: 'var(--slate-600)', fontWeight: 600 }}>
                             {p.minThreshold || 5} units
                           </td>
-                          <td style={{ textAlign: 'center', background: '#FFF7ED', fontWeight: 800, color: 'var(--orange-600)', fontSize: '1rem' }}>
+                          <td style={{ textAlign: 'center', background: 'rgba(255, 107, 0, 0.12)', fontWeight: 800, color: 'var(--brand-accent)', fontSize: '1rem' }}>
                             {suggested} packs
                           </td>
                           <td style={{ fontSize: '0.8rem', color: 'var(--slate-700)' }}>

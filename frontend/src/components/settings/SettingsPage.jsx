@@ -214,15 +214,15 @@ export const SettingsPage = () => {
       </form>
 
       {/* Card 3: Demo Data Reset */}
-      <div className="card" style={{ borderColor: '#FDE68A' }}>
-        <div className="card-header" style={{ background: '#FFFBEB' }}>
-          <div className="card-title" style={{ color: '#92400E' }}>
+      <div className="card" style={{ borderColor: 'rgba(245, 158, 11, 0.3)' }}>
+        <div className="card-header" style={{ background: 'rgba(245, 158, 11, 0.08)' }}>
+          <div className="card-title" style={{ color: '#F59E0B' }}>
             <RotateCcw size={18} />
             Reset Demonstration Data
           </div>
         </div>
         <div className="card-body">
-          <p style={{ fontSize: '0.85rem', color: 'var(--slate-600)', marginBottom: '16px' }}>
+          <p style={{ fontSize: '0.85rem', color: 'var(--slate-400)', marginBottom: '16px' }}>
             All changes, test bills, and added paints are stored in your active browser session. If you wish to restore the pristine initial demo dataset with sample Asian Paints, Berger, and Dr. Fixit records, click below.
           </p>
 
@@ -230,7 +230,7 @@ export const SettingsPage = () => {
             <button
               type="button"
               className="btn btn-outline"
-              style={{ color: '#B45309', borderColor: '#FCD34D' }}
+              style={{ color: '#F59E0B', borderColor: 'rgba(245, 158, 11, 0.4)' }}
               onClick={() => setConfirmReset(true)}
             >
               Reset to Original Demo Dataset

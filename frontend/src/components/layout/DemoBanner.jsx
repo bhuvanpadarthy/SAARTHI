@@ -1,83 +1,49 @@
 import React from 'react';
-import { Info, RotateCcw, CheckCircle2, RefreshCw } from 'lucide-react';
+import { Info, RotateCcw, CheckCircle2, RefreshCw, Activity, Sparkles, Database } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 
 export const DemoBanner = () => {
-  const { isBackendConnected, backendStatus, refreshData, resetToDefaults } = useApp();
+  const { isBackendConnected, backendStatus, refreshData, resetToDefaults, appMode } = useApp();
 
   return (
-    <div
-      className="demo-banner no-print"
-      style={{
-        background: isBackendConnected
-          ? 'linear-gradient(90deg, #ECFDF5 0%, #F0FDF4 100%)'
-          : 'linear-gradient(90deg, #FFF7ED 0%, #FEF3C7 100%)',
-        borderColor: isBackendConnected ? '#A7F3D0' : '#FDE68A',
-        color: isBackendConnected ? '#065F46' : '#92400E',
-      }}
-    >
+    <div className={`demo-banner no-print ${isBackendConnected ? 'connected-live' : 'demo-telemetry'}`}>
       <div className="demo-banner-content">
-        <span
-          className="demo-banner-tag"
-          style={{ background: isBackendConnected ? '#059669' : '#D97706' }}
-        >
-          {isBackendConnected ? 'LIVE' : 'DEMO'}
+        <span className={`demo-badge ${isBackendConnected ? 'live-badge' : 'demo-badge-active'}`}>
+          <span className="live-ping-dot" />
+          {isBackendConnected ? 'CLOUD LIVE' : 'SANDBOX DEMO'}
         </span>
-        {isBackendConnected ? (
-          <CheckCircle2 size={15} style={{ flexShrink: 0, color: '#059669' }} />
-        ) : (
-          <Info size={15} style={{ flexShrink: 0 }} />
-        )}
-        <span>
+
+        <div className="demo-status-text">
           {isBackendConnected ? (
             <>
-              <strong>Backend Active:</strong> Connected to Node.js + Express API. Storage Engine:{' '}
-              <em>{backendStatus}</em>. Stock transactions and paper bills are validated and saved on the server.
+              <span className="highlight-text">Server Active:</span> Express Node.js & Supabase Engine (<em>{backendStatus}</em>). Real-time inventory deduction & paper bill persistence online.
             </>
           ) : (
             <>
-              <strong>Local Demo Mode:</strong> Backend server at <code>localhost:5000</code> is offline. Operating in client demo mode with local fixtures. Start backend to persist to server.
+              <span className="highlight-text">Local Transaction Engine:</span> Operating in high-speed edge demo simulation. All paint catalog formulations and POS transactions are active.
             </>
           )}
-        </span>
+        </div>
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+      <div className="demo-actions">
         {isBackendConnected ? (
           <button
             onClick={refreshData}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '5px',
-              fontSize: '0.75rem',
-              color: '#065F46',
-              fontWeight: 700,
-              textDecoration: 'underline',
-              cursor: 'pointer',
-            }}
+            className="demo-action-btn live"
             title="Reload latest balances and audit ledger from backend"
           >
-            <RefreshCw size={12} />
-            Refresh Server Data
+            <RefreshCw size={13} />
+            <span>Sync Cloud Data</span>
           </button>
         ) : (
           <button
             onClick={resetToDefaults}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '5px',
-              fontSize: '0.75rem',
-              color: '#B45309',
-              fontWeight: 700,
-              textDecoration: 'underline',
-              cursor: 'pointer',
-            }}
+            className="demo-action-btn reset"
             title="Restore default sample paint data"
           >
-            <RotateCcw size={12} />
-            Reset Demo Data
+            <RotateCcw size={13} />
+            <span>Reset Demo Data</span>
           </button>
         )}
       </div>

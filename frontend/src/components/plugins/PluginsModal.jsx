@@ -97,47 +97,47 @@ export const PluginsModal = ({ isOpen, onClose }) => {
     <div className="modal-overlay" style={{ zIndex: 60 }}>
       <div className="modal-content plugins-modal-dialog">
         {/* Modal Header */}
-        <div className="modal-header" style={{ borderBottom: '1px solid var(--slate-200)', padding: '18px 24px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <div className="modal-header">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
             <div
               style={{
-                width: '38px',
-                height: '38px',
-                borderRadius: '10px',
+                width: '42px',
+                height: '42px',
+                borderRadius: '12px',
                 background: appMode === 'ai'
                   ? 'linear-gradient(135deg, #6366F1, #06B6D4)'
-                  : 'linear-gradient(135deg, #059669, #D97706)',
+                  : 'linear-gradient(135deg, #059669, #10B981)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 color: '#FFF',
                 boxShadow: appMode === 'ai'
-                  ? '0 4px 14px rgba(99,102,241,0.35)'
-                  : '0 4px 14px rgba(5,150,105,0.35)'
+                  ? '0 0 20px rgba(99,102,241,0.5)'
+                  : '0 0 20px rgba(16,185,129,0.5)'
               }}
             >
-              <Cpu size={20} />
+              <Cpu size={22} />
             </div>
             <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--navy-900)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#FFFFFF' }}>
                   SAARTHI Modular Plugins & Mode Engine
                 </h3>
                 <span
                   style={{
-                    fontSize: '0.7rem',
-                    fontWeight: 700,
-                    padding: '2px 8px',
-                    borderRadius: '12px',
-                    background: appMode === 'ai' ? '#EEF2FF' : '#ECFDF5',
-                    color: appMode === 'ai' ? '#4F46E5' : '#059669',
-                    border: `1px solid ${appMode === 'ai' ? '#C7D2FE' : '#A7F3D0'}`
+                    fontSize: '0.72rem',
+                    fontWeight: 800,
+                    padding: '3px 10px',
+                    borderRadius: '20px',
+                    background: appMode === 'ai' ? 'rgba(99,102,241,0.2)' : 'rgba(16,185,129,0.2)',
+                    color: appMode === 'ai' ? '#A5B4FC' : '#6EE7B7',
+                    border: `1px solid ${appMode === 'ai' ? 'rgba(99,102,241,0.45)' : 'rgba(16,185,129,0.45)'}`
                   }}
                 >
                   {appMode === 'ai' ? '🤖 AI Mode' : '🏢 Real Mode'}
                 </span>
               </div>
-              <p style={{ fontSize: '0.78rem', color: 'var(--slate-500)', marginTop: '2px' }}>
+              <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '2px' }}>
                 Switch operation modes between Autonomous AI Copilot and Production Shop POS terminal.
               </p>
             </div>
@@ -146,9 +146,9 @@ export const PluginsModal = ({ isOpen, onClose }) => {
           <button
             onClick={onClose}
             style={{
-              padding: '6px',
+              padding: '8px',
               borderRadius: '8px',
-              color: 'var(--slate-400)',
+              color: 'var(--text-secondary)',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
@@ -163,7 +163,7 @@ export const PluginsModal = ({ isOpen, onClose }) => {
         <div className="modal-body" style={{ padding: '24px', maxHeight: '72vh', overflowY: 'auto' }}>
           {/* Main Dual Mode Switcher Banner */}
           <div style={{ marginBottom: '24px' }}>
-            <div style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--slate-500)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '10px' }}>
+            <div style={{ fontSize: '0.74rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '10px' }}>
               System Operation Mode Preset
             </div>
 
@@ -172,14 +172,14 @@ export const PluginsModal = ({ isOpen, onClose }) => {
               <div
                 onClick={() => setAppMode('ai')}
                 style={{
-                  padding: '16px 18px',
+                  padding: '18px 20px',
                   borderRadius: '14px',
                   cursor: 'pointer',
-                  border: appMode === 'ai' ? '2px solid #6366F1' : '1px solid var(--slate-200)',
+                  border: appMode === 'ai' ? '2px solid #6366F1' : '1px solid var(--border-glass)',
                   background: appMode === 'ai'
-                    ? 'linear-gradient(135deg, rgba(99,102,241,0.08), rgba(6,182,212,0.06))'
-                    : 'var(--white)',
-                  boxShadow: appMode === 'ai' ? '0 6px 20px rgba(99,102,241,0.18)' : 'var(--shadow-sm)',
+                    ? 'linear-gradient(135deg, rgba(99,102,241,0.2), rgba(6,182,212,0.08))'
+                    : 'rgba(15,23,42,0.5)',
+                  boxShadow: appMode === 'ai' ? '0 0 25px rgba(99,102,241,0.25)' : 'none',
                   transition: 'all 0.2s ease',
                   position: 'relative'
                 }}
@@ -188,23 +188,24 @@ export const PluginsModal = ({ isOpen, onClose }) => {
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                     <div
                       style={{
-                        width: '32px',
-                        height: '32px',
-                        borderRadius: '8px',
+                        width: '36px',
+                        height: '36px',
+                        borderRadius: '10px',
                         background: '#6366F1',
                         color: '#FFF',
                         display: 'flex',
                         alignItems: 'center',
-                        justifyContent: 'center'
+                        justifyContent: 'center',
+                        boxShadow: '0 0 12px rgba(99,102,241,0.5)'
                       }}
                     >
-                      <Bot size={18} />
+                      <Bot size={20} />
                     </div>
                     <div>
-                      <div style={{ fontWeight: 800, fontSize: '0.98rem', color: 'var(--navy-900)' }}>
+                      <div style={{ fontWeight: 800, fontSize: '1rem', color: '#FFFFFF' }}>
                         🤖 AI Copilot Mode
                       </div>
-                      <div style={{ fontSize: '0.7rem', color: '#6366F1', fontWeight: 700 }}>
+                      <div style={{ fontSize: '0.72rem', color: '#A5B4FC', fontWeight: 700 }}>
                         {aiCount} AI Plugins Active
                       </div>
                     </div>
@@ -219,14 +220,14 @@ export const PluginsModal = ({ isOpen, onClose }) => {
                   />
                 </div>
 
-                <p style={{ fontSize: '0.78rem', color: 'var(--slate-600)', lineHeight: '1.4' }}>
+                <p style={{ fontSize: '0.8rem', color: '#CBD5E1', lineHeight: '1.45' }}>
                   Autonomous paint Copilot, seasonal stock demand forecasting, smart tint formulation calculator, and predictive Khata risk analysis.
                 </p>
 
                 {appMode === 'ai' && (
-                  <div style={{ marginTop: '10px', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.72rem', fontWeight: 700, color: '#4F46E5' }}>
-                    <Activity size={12} className="pulse-indicator" />
-                    <span>Active System Mode: AI Intelligence Layer On</span>
+                  <div style={{ marginTop: '12px', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.75rem', fontWeight: 800, color: '#A5B4FC' }}>
+                    <Activity size={14} className="pulse-indicator" />
+                    <span>Active System Mode: AI Intelligence Layer Online</span>
                   </div>
                 )}
               </div>
@@ -235,14 +236,14 @@ export const PluginsModal = ({ isOpen, onClose }) => {
               <div
                 onClick={() => setAppMode('real')}
                 style={{
-                  padding: '16px 18px',
+                  padding: '18px 20px',
                   borderRadius: '14px',
                   cursor: 'pointer',
-                  border: appMode === 'real' ? '2px solid #059669' : '1px solid var(--slate-200)',
+                  border: appMode === 'real' ? '2px solid #10B981' : '1px solid var(--border-glass)',
                   background: appMode === 'real'
-                    ? 'linear-gradient(135deg, rgba(5,150,105,0.08), rgba(217,119,6,0.05))'
-                    : 'var(--white)',
-                  boxShadow: appMode === 'real' ? '0 6px 20px rgba(5,150,105,0.18)' : 'var(--shadow-sm)',
+                    ? 'linear-gradient(135deg, rgba(16,185,129,0.2), rgba(245,158,11,0.08))'
+                    : 'rgba(15,23,42,0.5)',
+                  boxShadow: appMode === 'real' ? '0 0 25px rgba(16,185,129,0.25)' : 'none',
                   transition: 'all 0.2s ease',
                   position: 'relative'
                 }}
@@ -251,23 +252,24 @@ export const PluginsModal = ({ isOpen, onClose }) => {
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                     <div
                       style={{
-                        width: '32px',
-                        height: '32px',
-                        borderRadius: '8px',
+                        width: '36px',
+                        height: '36px',
+                        borderRadius: '10px',
                         background: '#059669',
                         color: '#FFF',
                         display: 'flex',
                         alignItems: 'center',
-                        justifyContent: 'center'
+                        justifyContent: 'center',
+                        boxShadow: '0 0 12px rgba(16,185,129,0.5)'
                       }}
                     >
-                      <Printer size={18} />
+                      <Printer size={20} />
                     </div>
                     <div>
-                      <div style={{ fontWeight: 800, fontSize: '0.98rem', color: 'var(--navy-900)' }}>
+                      <div style={{ fontWeight: 800, fontSize: '1rem', color: '#FFFFFF' }}>
                         🏢 Real Shop Terminal
                       </div>
-                      <div style={{ fontSize: '0.7rem', color: '#059669', fontWeight: 700 }}>
+                      <div style={{ fontSize: '0.72rem', color: '#6EE7B7', fontWeight: 700 }}>
                         {realCount} Real-World POS Plugins Active
                       </div>
                     </div>
@@ -278,18 +280,18 @@ export const PluginsModal = ({ isOpen, onClose }) => {
                     name="system_mode"
                     checked={appMode === 'real'}
                     onChange={() => setAppMode('real')}
-                    style={{ accentColor: '#059669', width: '18px', height: '18px', cursor: 'pointer' }}
+                    style={{ accentColor: '#10B981', width: '18px', height: '18px', cursor: 'pointer' }}
                   />
                 </div>
 
-                <p style={{ fontSize: '0.78rem', color: 'var(--slate-600)', lineHeight: '1.4' }}>
+                <p style={{ fontSize: '0.8rem', color: '#CBD5E1', lineHeight: '1.45' }}>
                   Fast counter POS for high-volume paper billing, physical thermal receipt printing, depot truck challans, and dynamic UPI QR code settlement.
                 </p>
 
                 {appMode === 'real' && (
-                  <div style={{ marginTop: '10px', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.72rem', fontWeight: 700, color: '#059669' }}>
-                    <Activity size={12} className="pulse-indicator" />
-                    <span>Active System Mode: Physical POS Terminal On</span>
+                  <div style={{ marginTop: '12px', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.75rem', fontWeight: 800, color: '#6EE7B7' }}>
+                    <Activity size={14} className="pulse-indicator" />
+                    <span>Active System Mode: Physical POS Terminal Online</span>
                   </div>
                 )}
               </div>
@@ -297,7 +299,7 @@ export const PluginsModal = ({ isOpen, onClose }) => {
           </div>
 
           {/* Plugin Filter Bar */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '10px', marginBottom: '16px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '10px', marginBottom: '18px' }}>
             <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
               <button
                 type="button"
@@ -329,13 +331,13 @@ export const PluginsModal = ({ isOpen, onClose }) => {
               </button>
             </div>
 
-            <div style={{ fontSize: '0.75rem', color: 'var(--slate-500)', fontWeight: 600 }}>
+            <div style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', fontWeight: 600 }}>
               {activeCount} of {plugins.length} Plugins Enabled
             </div>
           </div>
 
           {/* Plugin Cards Grid */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '14px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '14px' }}>
             {filteredPlugins.map((plugin) => {
               const IconComponent = ICON_MAP[plugin.iconName] || Zap;
               const isAi = plugin.category === 'ai';
@@ -344,31 +346,34 @@ export const PluginsModal = ({ isOpen, onClose }) => {
                 <div
                   key={plugin.id}
                   style={{
-                    background: 'var(--white)',
+                    background: plugin.enabled ? 'rgba(15, 23, 42, 0.75)' : 'rgba(15, 23, 42, 0.35)',
                     border: plugin.enabled
-                      ? `1px solid ${isAi ? '#C7D2FE' : '#A7F3D0'}`
-                      : '1px solid var(--slate-200)',
-                    borderRadius: '12px',
-                    padding: '16px',
+                      ? (isAi ? '1px solid rgba(99,102,241,0.45)' : '1px solid rgba(16,185,129,0.45)')
+                      : '1px solid var(--border-glass)',
+                    borderRadius: '14px',
+                    padding: '18px',
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'space-between',
-                    boxShadow: 'var(--shadow-sm)',
+                    boxShadow: plugin.enabled
+                      ? (isAi ? '0 4px 20px rgba(99,102,241,0.15)' : '0 4px 20px rgba(16,185,129,0.15)')
+                      : 'none',
                     opacity: plugin.enabled ? 1 : 0.65,
-                    transition: 'all 0.15s ease'
+                    transition: 'all 0.2s ease'
                   }}
                 >
                   <div>
                     {/* Plugin Header */}
-                    <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '10px', marginBottom: '10px' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '10px', marginBottom: '12px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                         <div
                           style={{
-                            width: '36px',
-                            height: '36px',
+                            width: '40px',
+                            height: '40px',
                             borderRadius: '10px',
-                            background: isAi ? '#EEF2FF' : '#ECFDF5',
-                            color: isAi ? '#4F46E5' : '#059669',
+                            background: isAi ? 'rgba(99,102,241,0.2)' : 'rgba(16,185,129,0.2)',
+                            color: isAi ? '#A5B4FC' : '#6EE7B7',
+                            border: `1px solid ${isAi ? 'rgba(99,102,241,0.4)' : 'rgba(16,185,129,0.4)'}`,
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
@@ -378,21 +383,21 @@ export const PluginsModal = ({ isOpen, onClose }) => {
                           <IconComponent size={20} />
                         </div>
                         <div>
-                          <div style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--navy-900)' }}>
+                          <div style={{ fontWeight: 800, fontSize: '0.94rem', color: '#FFFFFF' }}>
                             {plugin.name}
                           </div>
                           <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '2px' }}>
-                            <span style={{ fontSize: '0.68rem', color: 'var(--slate-500)', fontFamily: 'var(--font-mono)' }}>
+                            <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
                               {plugin.version}
                             </span>
                             <span
                               style={{
-                                fontSize: '0.65rem',
-                                fontWeight: 700,
-                                padding: '1px 6px',
+                                fontSize: '0.66rem',
+                                fontWeight: 800,
+                                padding: '1px 7px',
                                 borderRadius: '4px',
-                                background: isAi ? '#EEF2FF' : '#ECFDF5',
-                                color: isAi ? '#4F46E5' : '#059669'
+                                background: isAi ? 'rgba(99,102,241,0.25)' : 'rgba(16,185,129,0.25)',
+                                color: isAi ? '#A5B4FC' : '#6EE7B7'
                               }}
                             >
                               {plugin.badge}
@@ -412,7 +417,7 @@ export const PluginsModal = ({ isOpen, onClose }) => {
                       </label>
                     </div>
 
-                    <p style={{ fontSize: '0.78rem', color: 'var(--slate-600)', lineHeight: '1.45', marginBottom: '12px' }}>
+                    <p style={{ fontSize: '0.8rem', color: '#94A3B8', lineHeight: '1.45', marginBottom: '14px' }}>
                       {plugin.description}
                     </p>
                   </div>
@@ -420,23 +425,23 @@ export const PluginsModal = ({ isOpen, onClose }) => {
                   {/* Plugin Footer Action */}
                   <div
                     style={{
-                      borderTop: '1px solid var(--slate-100)',
-                      paddingTop: '10px',
+                      borderTop: '1px solid var(--border-glass)',
+                      paddingTop: '12px',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between'
                     }}
                   >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '0.72rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.74rem' }}>
                       <span
                         style={{
                           width: '7px',
                           height: '7px',
                           borderRadius: '50%',
-                          background: plugin.enabled ? (isAi ? '#6366F1' : '#10B981') : '#94A3B8'
+                          background: plugin.enabled ? (isAi ? '#818CF8' : '#34D399') : '#64748B'
                         }}
                       />
-                      <span style={{ color: plugin.enabled ? 'var(--slate-700)' : 'var(--slate-400)', fontWeight: 600 }}>
+                      <span style={{ color: plugin.enabled ? '#FFFFFF' : 'var(--text-muted)', fontWeight: 600 }}>
                         {plugin.enabled ? 'Active on Edge' : 'Disabled'}
                       </span>
                     </div>
@@ -446,9 +451,9 @@ export const PluginsModal = ({ isOpen, onClose }) => {
                         type="button"
                         onClick={() => handleTestPlugin(plugin)}
                         style={{
-                          fontSize: '0.72rem',
+                          fontSize: '0.75rem',
                           fontWeight: 700,
-                          color: isAi ? '#4F46E5' : '#059669',
+                          color: isAi ? '#818CF8' : '#34D399',
                           display: 'flex',
                           alignItems: 'center',
                           gap: '4px',
@@ -456,7 +461,7 @@ export const PluginsModal = ({ isOpen, onClose }) => {
                         }}
                       >
                         <span>Open Capability</span>
-                        <ArrowRight size={12} />
+                        <ArrowRight size={13} />
                       </button>
                     )}
                   </div>
@@ -467,17 +472,8 @@ export const PluginsModal = ({ isOpen, onClose }) => {
         </div>
 
         {/* Modal Footer */}
-        <div
-          className="modal-footer"
-          style={{
-            borderTop: '1px solid var(--slate-200)',
-            padding: '16px 24px',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center'
-          }}
-        >
-          <div style={{ fontSize: '0.75rem', color: 'var(--slate-500)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+        <div className="modal-footer">
+          <div style={{ fontSize: '0.76rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '6px', marginRight: 'auto' }}>
             <Info size={14} />
             <span>Plugin states and mode selection are saved in real-time.</span>
           </div>
@@ -494,4 +490,3 @@ export const PluginsModal = ({ isOpen, onClose }) => {
     </div>
   );
 };
-

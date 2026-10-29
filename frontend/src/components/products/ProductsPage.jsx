@@ -93,12 +93,12 @@ export const ProductsPage = () => {
     const stock = product.currentStock ?? 0;
     const threshold = product.minThreshold || settings.lowStockThreshold || 5;
     if (stock === 0) {
-      return { status: 'out', label: 'OUT OF STOCK', color: '#DC2626', bg: '#FEF2F2', border: '#FECACA' };
+      return { status: 'out', label: 'OUT OF STOCK', color: '#F43F5E', bg: 'rgba(244, 63, 94, 0.12)', border: 'rgba(244, 63, 94, 0.3)' };
     }
     if (stock <= threshold) {
-      return { status: 'low', label: 'LOW STOCK', color: '#D97706', bg: '#FFFBEB', border: '#FDE68A' };
+      return { status: 'low', label: 'LOW STOCK', color: '#F59E0B', bg: 'rgba(245, 158, 11, 0.12)', border: 'rgba(245, 158, 11, 0.3)' };
     }
-    return { status: 'in', label: 'IN STOCK', color: '#059669', bg: '#ECFDF5', border: '#A7F3D0' };
+    return { status: 'in', label: 'IN STOCK', color: '#10B981', bg: 'rgba(16, 185, 129, 0.12)', border: 'rgba(16, 185, 129, 0.3)' };
   };
 
   const handleViewStockDetail = (product) => {

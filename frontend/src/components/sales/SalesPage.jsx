@@ -81,12 +81,12 @@ export const SalesPage = () => {
     const stock = product.currentStock ?? 0;
     const threshold = product.minThreshold || settings.lowStockThreshold || 5;
     if (stock === 0) {
-      return { status: 'out', label: 'OUT OF STOCK', color: '#DC2626', bg: '#FEF2F2', border: '#FECACA', icon: 'out' };
+      return { status: 'out', label: 'OUT OF STOCK', color: '#F43F5E', bg: 'rgba(244, 63, 94, 0.12)', border: 'rgba(244, 63, 94, 0.3)', icon: 'out' };
     }
     if (stock <= threshold) {
-      return { status: 'low', label: 'LOW STOCK', color: '#D97706', bg: '#FFFBEB', border: '#FDE68A', icon: 'low' };
+      return { status: 'low', label: 'LOW STOCK', color: '#F59E0B', bg: 'rgba(245, 158, 11, 0.12)', border: 'rgba(245, 158, 11, 0.3)', icon: 'low' };
     }
-    return { status: 'in', label: 'IN STOCK', color: '#059669', bg: '#ECFDF5', border: '#A7F3D0', icon: 'in' };
+    return { status: 'in', label: 'IN STOCK', color: '#10B981', bg: 'rgba(16, 185, 129, 0.12)', border: 'rgba(16, 185, 129, 0.3)', icon: 'in' };
   };
 
   // Line item helpers
@@ -973,23 +973,23 @@ export const SalesPage = () => {
 
               {/* Summary Stats */}
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px', marginBottom: '16px' }}>
-                <div style={{ padding: '10px 14px', borderRadius: 'var(--radius-md)', background: '#ECFDF5', border: '1px solid #A7F3D0', textAlign: 'center' }}>
-                  <div style={{ fontSize: '1.2rem', fontWeight: 800, color: '#059669' }}>
+                <div style={{ padding: '10px 14px', borderRadius: 'var(--radius-md)', background: 'rgba(16, 185, 129, 0.1)', border: '1px solid rgba(16, 185, 129, 0.3)', textAlign: 'center' }}>
+                  <div style={{ fontSize: '1.2rem', fontWeight: 800, color: '#10B981' }}>
                     {products.filter(p => p.currentStock > (p.minThreshold || settings.lowStockThreshold || 5)).length}
                   </div>
-                  <div style={{ fontSize: '0.7rem', fontWeight: 600, color: '#059669' }}>IN STOCK</div>
+                  <div style={{ fontSize: '0.7rem', fontWeight: 600, color: '#10B981' }}>IN STOCK</div>
                 </div>
-                <div style={{ padding: '10px 14px', borderRadius: 'var(--radius-md)', background: '#FFFBEB', border: '1px solid #FDE68A', textAlign: 'center' }}>
-                  <div style={{ fontSize: '1.2rem', fontWeight: 800, color: '#D97706' }}>
+                <div style={{ padding: '10px 14px', borderRadius: 'var(--radius-md)', background: 'rgba(245, 158, 11, 0.1)', border: '1px solid rgba(245, 158, 11, 0.3)', textAlign: 'center' }}>
+                  <div style={{ fontSize: '1.2rem', fontWeight: 800, color: '#F59E0B' }}>
                     {products.filter(p => p.currentStock > 0 && p.currentStock <= (p.minThreshold || settings.lowStockThreshold || 5)).length}
                   </div>
-                  <div style={{ fontSize: '0.7rem', fontWeight: 600, color: '#D97706' }}>LOW STOCK</div>
+                  <div style={{ fontSize: '0.7rem', fontWeight: 600, color: '#F59E0B' }}>LOW STOCK</div>
                 </div>
-                <div style={{ padding: '10px 14px', borderRadius: 'var(--radius-md)', background: '#FEF2F2', border: '1px solid #FECACA', textAlign: 'center' }}>
-                  <div style={{ fontSize: '1.2rem', fontWeight: 800, color: '#DC2626' }}>
+                <div style={{ padding: '10px 14px', borderRadius: 'var(--radius-md)', background: 'rgba(244, 63, 94, 0.1)', border: '1px solid rgba(244, 63, 94, 0.3)', textAlign: 'center' }}>
+                  <div style={{ fontSize: '1.2rem', fontWeight: 800, color: '#F43F5E' }}>
                     {products.filter(p => p.currentStock === 0).length}
                   </div>
-                  <div style={{ fontSize: '0.7rem', fontWeight: 600, color: '#DC2626' }}>OUT OF STOCK</div>
+                  <div style={{ fontSize: '0.7rem', fontWeight: 600, color: '#F43F5E' }}>OUT OF STOCK</div>
                 </div>
               </div>
 

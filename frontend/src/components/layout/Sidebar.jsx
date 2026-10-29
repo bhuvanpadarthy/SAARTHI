@@ -121,10 +121,8 @@ export const Sidebar = ({ isOpen, onClose }) => {
         <div className="sidebar-footer">
           {/* Quick Mode Toggle in Sidebar */}
           <div className="sidebar-mode-card">
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-              <div style={{ fontSize: '0.72rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px', color: 'var(--slate-400)' }}>
-                System Mode
-              </div>
+            <div className="sidebar-mode-card-header">
+              <span className="sidebar-mode-title">System Mode</span>
               <span className={`mode-micro-badge ${appMode === 'ai' ? 'ai' : 'real'}`}>
                 {appMode === 'ai' ? 'AI ACTIVE' : 'REAL POS'}
               </span>
@@ -135,6 +133,7 @@ export const Sidebar = ({ isOpen, onClose }) => {
                 type="button"
                 className={`sidebar-mode-btn ${appMode === 'ai' ? 'active-ai' : ''}`}
                 onClick={() => setAppMode('ai')}
+                title="Switch to Autonomous AI Copilot Mode"
               >
                 <Bot size={13} />
                 <span>AI Mode</span>
@@ -143,6 +142,7 @@ export const Sidebar = ({ isOpen, onClose }) => {
                 type="button"
                 className={`sidebar-mode-btn ${appMode === 'real' ? 'active-real' : ''}`}
                 onClick={() => setAppMode('real')}
+                title="Switch to Physical POS Terminal Mode"
               >
                 <Printer size={13} />
                 <span>Real POS</span>
@@ -150,7 +150,12 @@ export const Sidebar = ({ isOpen, onClose }) => {
             </div>
           </div>
 
-          <div className="shop-info-card" style={{ marginTop: '10px' }}>
+          <div
+            className="shop-info-card"
+            style={{ cursor: 'pointer' }}
+            onClick={() => handleNavClick('settings')}
+            title="Click to manage shop profile & settings"
+          >
             <div className="shop-avatar">
               <Store size={18} />
             </div>

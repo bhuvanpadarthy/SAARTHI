@@ -3,7 +3,7 @@ import { isSupabaseConfigured } from '../../config/supabase.js';
 
 const router = Router();
 
-router.get('/health', (req, res) => {
+const sendHealthStatus = (req, res) => {
   res.status(200).json({
     success: true,
     data: {
@@ -14,6 +14,9 @@ router.get('/health', (req, res) => {
       service: 'SAARTHI Paint-Shop POS & Inventory Management Backend',
     },
   });
-});
+};
+
+router.get('/health', sendHealthStatus);
+router.get('/', sendHealthStatus);
 
 export default router;

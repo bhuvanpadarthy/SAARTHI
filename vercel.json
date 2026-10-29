@@ -1,0 +1,34 @@
+{
+  "name": "saarthi",
+  "services": {
+    "frontend": {
+      "root": "frontend"
+    },
+    "backend": {
+      "root": "backend",
+      "entrypoint": "api/index.js"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": {
+        "service": "backend",
+        "path": "/api/$1"
+      }
+    },
+    {
+      "source": "/api",
+      "destination": {
+        "service": "backend",
+        "path": "/api/health"
+      }
+    },
+    {
+      "source": "/(.*)",
+      "destination": {
+        "service": "frontend"
+      }
+    }
+  ]
+}

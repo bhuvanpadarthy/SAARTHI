@@ -32,3 +32,4 @@ coverage/
 *.class
 
 *.java
+.vercel

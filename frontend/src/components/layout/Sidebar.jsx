@@ -57,22 +57,25 @@ export const Sidebar = ({ isOpen, onClose }) => {
       )}
       <aside className={`app-sidebar no-print ${isOpen ? 'open' : ''} ${appMode === 'ai' ? 'sidebar-ai-glow' : 'sidebar-real-glow'}`}>
         <div className="sidebar-header">
-          <div className="brand-badge">
-            <div className={`brand-logo-icon ${appMode === 'ai' ? 'ai-logo-glow' : 'real-logo-glow'}`}>
-              <Paintbrush size={22} strokeWidth={2.4} />
-            </div>
+          <div className="brand-badge" style={{ gap: '12px', alignItems: 'center' }}>
+            <span className="brand-mark" aria-hidden="true" title="Rangoli Paints Guntur">
+              <span />
+              <span />
+              <span />
+              <span />
+            </span>
             <div className="brand-text">
-              <h1>
-                SAARTHI <span className="brand-tag">PAINTS</span>
+              <h1 style={{ fontSize: '1.18rem', letterSpacing: '-0.03em', lineHeight: 1.1, margin: 0 }}>
+                Rangoli <span style={{ color: 'var(--red)', fontStyle: 'italic', fontFamily: 'var(--font-serif)' }}>Paints</span>
               </h1>
-              <div className="brand-subtitle">
-                {appMode === 'ai' ? '⚡ AI Copilot Engine' : '🏭 Real POS Terminal'}
+              <div className="brand-subtitle" style={{ font: '9.5px/1.2 var(--font-mono)', letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--muted)', marginTop: '4px' }}>
+                {appMode === 'ai' ? 'AI COPILOT • GUNTUR' : 'GUNTUR • MAKE ROOM FOR COLOR'}
               </div>
             </div>
             {isOpen && (
               <button
                 onClick={onClose}
-                style={{ marginLeft: 'auto', color: 'var(--slate-400)' }}
+                style={{ marginLeft: 'auto', color: 'var(--ink)', background: 'transparent', border: 'none', cursor: 'pointer' }}
                 aria-label="Close menu"
               >
                 <X size={20} />
